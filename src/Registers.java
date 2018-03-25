@@ -1,22 +1,33 @@
 public class Registers {
-    int PTR;
-    int R;
-    int IP;
-    int CS;
-    int SS;
-    int SP;
-    int IR;
-    int TI;
-    int RE;
-    int CHST1;
-    int CHST2;
-    int CHST3;
-    int MODE;
-    int C;
-    int ERR;
-    int ST;
+    private int PTR, R, IP, CS, SS, SP, IR, TI, RE, CHST1, CHST2, CHST3, C, MODE, ERR, CF, ZF,SF;
 
 //SETERIAI
+
+
+    public void setCF(int CF) {
+        if(CF>9){
+            System.out.println("Registro CF reikšmė netelpa į rėžius!");
+        } else {
+            this.CF = CF;
+        }
+    }
+
+    public void setZF(int ZF) {
+        if(ZF>9){
+            System.out.println("Registro ZF reikšmė netelpa į rėžius!");
+        } else {
+            this.ZF = ZF;
+        }
+    }
+
+    public int getCF() {
+        return CF;
+    }
+
+    public int getZF() {
+        return ZF;
+    }
+
     public void setCS(int CS) {
         if(CS>9999){
             System.out.println("Registro CS reikšmė netelpa į rėžius!");
@@ -89,11 +100,11 @@ public class Registers {
             this.ERR = ERR;
         }
     }
-    public void setST(int ST) {
-        if(ST>99){
-            System.out.println("Registro ST reikšmė netelpa į rėžius!");
+    public void setSF(int SF) {
+        if(SF>9){
+            System.out.println("Registro SF reikšmė netelpa į rėžius!");
         } else {
-            this.ST = ST;
+            this.SF = SF;
         }
     }
     public void setCHST1(int CHST1) {
@@ -195,8 +206,8 @@ public class Registers {
         return ERR;
     }
 
-    public int getST() {
-        return ST;
+    public int getSF() {
+        return SF;
     }
 
     public void SETCH(int register){
