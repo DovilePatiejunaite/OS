@@ -1,24 +1,36 @@
 public class Registers {
-    private int PTR, R, P, IP, CS, SS, SP, IR, TI, RE, CHST1, CHST2, CHST3, C, MODE, ERR, CF, ZF,SF;
-
+    private int PTR, R, P, IP, CS, SS, SP, IR, TI, RE, CHST1, CHST2, CHST3, MODE, ERR, CF, ZF,SF;
+    private String RS = "        ";
 //SETERIAI
 
 
-    public void setP(int p) {
-        P = p;
+    public void setRS(String RS) {
+        if(RS.length()>8){
+            System.out.println("Registro RS reikšmė netelpa į rėžius!");
+        } else {
+            this.RS = RS;
+        }
+    }
+
+    public void setP(int P) {
+        if(P>99999999){
+            System.out.println("Registro P reikšmė netelpa į rėžius!");
+        } else {
+            this.P = P;
+        }
     }
 
     public void setCF(int CF) {
-        if(CF>9){
-            System.out.println("Registro CF reikšmė netelpa į rėžius!");
+        if(CF>9||(CF!=0&&CF!=1)){
+            System.out.println("Netinkama registro CF reikšmė!");
         } else {
             this.CF = CF;
         }
     }
 
     public void setZF(int ZF) {
-        if(ZF>9){
-            System.out.println("Registro ZF reikšmė netelpa į rėžius!");
+        if(ZF>9||(ZF!=0&&ZF!=1)){
+            System.out.println("Netinkama registro ZF reikšmė!");
         } else {
             this.ZF = ZF;
         }
@@ -54,7 +66,7 @@ public class Registers {
         }
     }
     public void setR(int R) {
-        if(R>9999){
+        if(R>99999999){
             System.out.println("Registro R reikšmė netelpa į rėžius!");
         } else {
             this.R = R;
@@ -105,8 +117,8 @@ public class Registers {
         }
     }
     public void setSF(int SF) {
-        if(SF>9){
-            System.out.println("Registro SF reikšmė netelpa į rėžius!");
+        if(SF>9||(SF!=0&&SF!=1)){
+            System.out.println("Netinkama registro SF reikšmė!");
         } else {
             this.SF = SF;
         }
@@ -139,17 +151,13 @@ public class Registers {
             this.MODE = MODE;
         }
     }
-    public void setC(int C) {
-        if(C>9||(C!=0&&C!=1)){
-            System.out.println("Netinkama registro C reikšmė!");
-        } else {
-            this.C = C;
-        }
-    }
 
     //GETERIAI
 
 
+    public String getRS() {
+        return RS;
+    }
     public int getCHST1() {
         return CHST1;
     }
@@ -190,9 +198,6 @@ public class Registers {
         return RE;
     }
 
-    public int getC() {
-        return C;
-    }
 
     public int getSP() {
         return SP;
