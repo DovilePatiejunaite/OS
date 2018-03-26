@@ -93,6 +93,8 @@ public class Registers {
         } else {
             this.IR = IR;
         }
+
+        setIP(IR);
     }
     public void setTI(int TI) {
         if(TI>99){

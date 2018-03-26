@@ -2,6 +2,7 @@
 import java.util.*;
 import java.io.*;
 public class VmCommands extends Registers{
+    //konstruktorius
 
     //funkcija tikrinanti ar neperžiangiami registrų rėžiai
     private void overflow(int last) {
@@ -194,25 +195,14 @@ public class VmCommands extends Registers{
         INC("IP");
     }
     //Įvedimo/išvedimo komandos.
-    public void prt(Memory m, int adress){
-        String i = m.getFromArray(adress);
-        System.out.println(i);
+    public void print(){
         INC("IP");
+        setIR(4);
     }
-    public void wrt(Memory m, int adress) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Įveskite iki 8 simbolių, įvedimui į atmintį:");
-        String input = "";
-        while(scanner.hasNextLine()){
-            input = scanner.nextLine();
-            if(input.length()<9){
-                break;
-            } else {
-                System.out.println("Neteisinga įvestis!");
-            }
-        }
-        m.setArrayWord(input, adress);
+    public void write() {
         INC("IP");
+        setIR(3);
+
     }
     //Valdymo perdavimo komandos
     public void go(int adress){
@@ -296,4 +286,13 @@ public class VmCommands extends Registers{
         INC("IP");
     }
 
+    //HDD
+    public void readhard(){
+        INC("IP");
+        setIR(6);
+    }
+    public void writehard(){
+        INC("IP");
+        setIR(5);
+    }
 }

@@ -3,6 +3,7 @@ public class Main {
     public static void main(String[] args) {
         VmCommands v = new VmCommands();
         Memory m = new Memory();
+        RmCommands r = new RmCommands();
         v.setR(9999);
         m.setArrayWord("5",3);
         //System.out.println(m.getFromArray(0));
@@ -17,7 +18,7 @@ public class Main {
 
         //v.prt(m,3);
          //System.out.println(s);
-        v.wrt(m,4);
+        v.write();
         System.out.println(m.getFromArray(4));
     }
 }
