@@ -1,8 +1,12 @@
 public class Registers {
-    private int PTR, R, IP, CS, SS, SP, IR, TI, RE, CHST1, CHST2, CHST3, C, MODE, ERR, CF, ZF,SF;
+    private int PTR, R, P, IP, CS, SS, SP, IR, TI, RE, CHST1, CHST2, CHST3, C, MODE, ERR, CF, ZF,SF;
 
 //SETERIAI
 
+
+    public void setP(int p) {
+        P = p;
+    }
 
     public void setCF(int CF) {
         if(CF>9){
@@ -210,6 +214,10 @@ public class Registers {
         return SF;
     }
 
+    public int getP() {
+        return P;
+    }
+
     public void SETCH(int register){
         if(register==1){
             setCHST1(1);
@@ -233,6 +241,7 @@ public class Registers {
         }
     }
     public void INC(String register){
+        //switch
         if(register.equals("TI")){
             setTI(getTI()+1);
         } else if(register.equals("SP")){
