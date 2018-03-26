@@ -1,7 +1,9 @@
 public class Memory {
     private String[][] array = new String[800][1];
-    //CHAR???
     //Konstruktorius
+    //interuptai nuo 0-39
+    //duomnys - vm 40-699
+    //stekas nuo 700-799
     public Memory(){
         System.out.println("Inicializuojama atmintis");
         for (int i = 0; i < array.length; i++){

@@ -251,4 +251,49 @@ public class VmCommands extends Registers{
         }
     }
     //Steko valdymo komandos
+    //flagai??
+    public void push(Memory memory){
+        String s = String.valueOf(getR());
+        memory.setArrayWord(s,getSS()+getSP());
+        DEC("SP");
+        INC("IP");
+    }
+
+    public void pushs(Memory memory){
+        memory.setArrayWord(getRS(),getSS()+getSP());
+        DEC("SP");
+        INC("IP");
+    }
+    public void pop(Memory memory){
+        int i = Integer.parseInt(memory.getFromArray(getSS()+getSP()));
+        setR(i);
+        INC("SP");
+        INC("IP");
+    }
+    public void pops(Memory memory){
+        String s = memory.getFromArray(getSS()+getSP());
+        setRS(s);
+        INC("SP");
+        INC("IP");
+    }
+    public void clears(Memory memory){
+        for(int i=700;i<800;i++){
+            memory.setArrayWord("        ", i);
+        }
+        setSP(0000);
+        INC("IP");
+    }
+    public void pushm(Memory memory, int adress){
+        String m = memory.getFromArray(adress);
+        memory.setArrayWord(m,getSP()+getSS());
+        DEC("SP");
+        INC("IP");
+    }
+    public void popm(Memory memory, int adress){
+        String s = memory.getFromArray(getSS()+getSP());
+        memory.setArrayWord(s,adress);
+        INC("SP");
+        INC("IP");
+    }
+
 }
