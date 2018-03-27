@@ -1,9 +1,12 @@
-public class Interupts extends RmCommands{
+public class Interupts extends Registers{
     private int interrupt;
-    Interupts(int interrupt){
+    Interupts(Memory m){
+        super(m);
+        String intadress = m.getFromArray(getInterrupt());
+        int cs = Integer.parseInt(intadress.substring(0,3));
 
-        this.interrupt = interrupt;
-
+        setCS(cs);
+        //jei 1 interuptas
     }
 
     public void setInterrupt(int interrupt) {

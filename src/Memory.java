@@ -5,7 +5,7 @@ public class Memory{
     //duomnys - vm 40-699
     //stekas nuo 700-799
     public Memory(){
-        System.out.println("Inicializuojama atmintis");
+        System.out.println("M KONSTR");
         for (int i = 0; i < array.length; i++){
             for (int j = 0; j < array[0].length; j++) {
                 array[i][j] = "        ";

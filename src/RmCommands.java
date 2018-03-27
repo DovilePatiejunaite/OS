@@ -3,6 +3,8 @@ import java.util.Scanner;
 public class RmCommands extends VmCommands{
     RmCommands(Memory m){
         super(m);
+        System.out.println("RM KONSTR");
+
     }
 
     public void prt(int adress) {
@@ -71,7 +73,7 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
     //1 bloko rašymas į diską.
-    public void writeh(ExternalMemory em, Memory m, int adress){
+    public void writeh(ExternalMemory em, int adress){
         for (int i = 0; i<10; i++){
             em.setArrayWord(m.getFromArray(i),adress);
             i++;

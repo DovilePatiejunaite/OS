@@ -4,10 +4,11 @@ import java.io.*;
 public class VmCommands extends Registers{
     VmCommands(Memory m){
         super(m);
+        System.out.println("VM KONSTR");
     }
     //konstruktorius
     //IP+CS!!!
-    //SS+SP!!!
+    //QS+QP!!!
     //funkcija tikrinanti ar neperžiangiami registrų rėžiai
     private void overflow(int last) {
         if(last>99999999){
@@ -26,7 +27,7 @@ public class VmCommands extends Registers{
 
     //aritmetinės komandos
     public void add(int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         int value = Integer.parseInt(i);
         int last = getR()+value;
         overflow(last);
@@ -39,7 +40,7 @@ public class VmCommands extends Registers{
         timer();
     }
     public void sub(int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         int value = Integer.parseInt(i);
         int last = getR()-value;
         setR(last);
@@ -53,7 +54,7 @@ public class VmCommands extends Registers{
         timer();
     }
     public void mul( int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(getCS()+adress);
         int value = Integer.parseInt(i);
         int last = getR()*value;
         overflow(last);
@@ -64,7 +65,7 @@ public class VmCommands extends Registers{
         timer();
     }
     public void div(int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         int value = Integer.parseInt(i);
         int last = getR()/value;
         setR(last);
@@ -75,7 +76,7 @@ public class VmCommands extends Registers{
         timer();
     }
     public void mod(int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         int value = Integer.parseInt(i);
         int last = getR()%value;
         setR(last);
@@ -88,7 +89,7 @@ public class VmCommands extends Registers{
     }
     //loginės komandos
     public void and(int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         int value = Integer.parseInt(i);
         int last = getR()&value;
         setR(last);
@@ -103,7 +104,7 @@ public class VmCommands extends Registers{
         timer();
     }
     public void or(int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         int value = Integer.parseInt(i);
         int last = getR()|value;
         setR(last);
@@ -114,7 +115,7 @@ public class VmCommands extends Registers{
         timer();
     }
     public void xor( int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         int value = Integer.parseInt(i);
         int last = getR()^value;
         setR(last);
@@ -135,25 +136,25 @@ public class VmCommands extends Registers{
     }
     //Duomenims apdoroti skirtos komandos
     public void load(int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         int value = Integer.parseInt(i);
         setR(value);
         INC("IP");
         timer();
     }
     public void store(int adress){
-        String str = String.valueOf(getR());
+        String str = String.valueOf(getR()+getCS());
         m.setArrayWord(str,adress);
         INC("IP");
         timer();
     }
     public void storeString(Memory m, int adress){
-        m.setArrayWord(getRS(),adress);
+        m.setArrayWord(getRS(),adress+getCS());
         INC("IP");
         timer();
     }
     public void loadString( int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         setRS(i);
         INC("IP");
         timer();
@@ -194,7 +195,7 @@ public class VmCommands extends Registers{
     }
     //Palyginimo komandos
     public void cpr(int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         int value = Integer.parseInt(i);
         int last = getR()-value;
         if(last == 0){
@@ -208,7 +209,7 @@ public class VmCommands extends Registers{
         timer();
     }
     public void cps(int adress){
-        String i = m.getFromArray(adress);
+        String i = m.getFromArray(adress+getCS());
         if(i.equals(getRS())){
             setZF(1);
         } else setZF(0);
@@ -217,12 +218,14 @@ public class VmCommands extends Registers{
         timer();
     }
     //Įvedimo/išvedimo komandos.
-    public void print(){
+    public void print(int adress){
+        setR(adress+getCS());
         setIR(4);
         INC("IP");
         timer();
     }
-    public void write() {
+    public void write(int adress) {
+        setR(adress+getCS());
         setIR(3);
         INC("IP");
         timer();
@@ -232,7 +235,7 @@ public class VmCommands extends Registers{
         setIP(adress);
         timer();
     }
-    //vartotojo programos vykdymo programa
+    //vartotojo programos vykdymo pabaiga
     public void halt(String command){
         setIR(1);
         //sukelia pertraukima 1
@@ -275,29 +278,31 @@ public class VmCommands extends Registers{
     //flagai??
     public void push(){
         String s = String.valueOf(getR());
-        m.setArrayWord(s,getSS()+getSP());
-        DEC("SP");
+        m.setArrayWord(s,getQS()+getQP());
+        INC("QP");
         INC("IP");
         timer();
     }
 
     public void pushs(){
-        m.setArrayWord(getRS(),getSS()+getSP());
-        DEC("SP");
+        m.setArrayWord(getRS(),getQS()+getQP());
+        INC("QP");
         INC("IP");
         timer();
     }
     public void pop(){
-        int i = Integer.parseInt(m.getFromArray(getSS()+getSP()));
+        int i = Integer.parseInt(m.getFromArray(getQS()+getQP()));
         setR(i);
-        INC("SP");
+        m.setArrayWord("",getQS()+getQP());
+        DEC("QP");
         INC("IP");
         timer();
     }
     public void pops(){
-        String s = m.getFromArray(getSS()+getSP());
+        String s = m.getFromArray(getQS()+getQP());
         setRS(s);
-        INC("SP");
+        m.setArrayWord("",getQS()+getQP());
+        DEC("QP");
         INC("IP");
         timer();
     }
@@ -305,32 +310,44 @@ public class VmCommands extends Registers{
         for(int i=700;i<800;i++){
             m.setArrayWord("        ", i);
         }
-        setSP(0000);
+        setQP(0000);
         INC("IP");
         timer();
     }
     public void pushm(int adress){
         String s = m.getFromArray(adress);
-        m.setArrayWord(s,getSP()+getSS());
-        DEC("SP");
+        m.setArrayWord(s,getQP()+getQS());
+        INC("QP");
         INC("IP");
         timer();
     }
     public void popm(int adress){
-        String s = m.getFromArray(getSS()+getSP());
+        String s = m.getFromArray(getQS()+getQP());
         m.setArrayWord(s,adress);
-        INC("SP");
+        m.setArrayWord("",getQS()+getQP());
+        DEC("QP");
         INC("IP");
         timer();
     }
     //supushina flagu registrus i steką tokia tvarka: CF,SF,ZF
     public void pushf(){
-        m.setArrayWord(String.valueOf(getCF()),getSS()+getSP());
-        DEC("SP");
-        m.setArrayWord(String.valueOf(getSF()),getSS()+getSP());
-        DEC("SP");
-        m.setArrayWord(String.valueOf(getZF()),getSS()+getSP());
-        DEC("SP");
+        String whole = String.valueOf(getCF()).concat(String.valueOf(getSF()));
+        String last = whole.concat(String.valueOf(getZF()));
+        m.setArrayWord(last,getQS()+getQP());
+        INC("QP");
+        INC("IP");
+        timer();
+    }
+    public void popf(){
+        String whole = m.getFromArray(getQS()+getQP());
+        int cf = Integer.parseInt(whole.substring(4,5));
+        int sf = Integer.parseInt(whole.substring(5,6));
+        int zf = Integer.parseInt(whole.substring(6,7));
+        m.setArrayWord("",getQS()+getQP());
+        setCF(cf);
+        setSF(sf);
+        setZF(zf);
+        DEC("QP");
         INC("IP");
         timer();
     }
@@ -353,6 +370,5 @@ public class VmCommands extends Registers{
                 setIR(2);
             }
         }
-
     }
 }

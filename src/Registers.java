@@ -1,6 +1,6 @@
 
 public class Registers {
-    private int PTR, R, P, IP, CS, SS, SP, IR, TI, RE, CHST1, CHST2, CHST3, MODE, ERR, CF, ZF,SF;
+    private int PTR, R, P, IP, CS, QS, QP, IR, TI, RE, CHST1, CHST2, CHST3, MODE, ERR, CF, ZF,SF;
     private String RS = "        ";
     //nustatyti pradines kodo segmento ir steko segmento reiksmes;
 //SETERIAI
@@ -79,18 +79,18 @@ public class Registers {
         }
     }
 
-    public void setSS(int SS) {
-        if(SS>9999){
-            System.out.println("Registro SS reikšmė netelpa į rėžius!");
+    public void setQS(int QS) {
+        if(QS>9999){
+            System.out.println("Registro QS reikšmė netelpa į rėžius!");
         } else {
-            this.SS = SS;
+            this.QS = QS;
         }
     }
-    public void setSP(int SP) {
-        if(SP>9999){
-            System.out.println("Registro SP reikšmė netelpa į rėžius!");
+    public void setQP(int QP) {
+        if(QP>9999){
+            System.out.println("Registro QP reikšmė netelpa į rėžius!");
         } else {
-            this.SP = SP;
+            this.QP = QP;
         }
     }
 
@@ -103,8 +103,8 @@ public class Registers {
         } else {
             this.IR = IR;
         }
-
-
+        setMODE(1);
+        Interupts interupt = new Interupts(m);
     }
     public void setTI(int TI) {
         if(TI>99){
@@ -211,12 +211,12 @@ public class Registers {
     }
 
 
-    public int getSP() {
-        return SP;
+    public int getQP() {
+        return QP;
     }
 
-    public int getSS() {
-        return SS;
+    public int getQS() {
+        return QS;
     }
 
     public int getTI() {
@@ -261,8 +261,8 @@ public class Registers {
         //switch
         if(register.equals("TI")){
             setTI(getTI()+1);
-        } else if(register.equals("SP")){
-            setSP(getSP()+1);
+        } else if(register.equals("QP")){
+            setQP(getQP()+1);
         } else if(register.equals("IP")){
             setIP(getIP()+1);
         } else {
@@ -273,8 +273,8 @@ public class Registers {
         if(register.equals("TI")){
             setTI(getTI()-1);
             //pertrraukimas jei TI = 0??
-        } else if(register.equals("SP")){
-            setSP(getSP()-1);
+        } else if(register.equals("QP")){
+            setQP(getQP()-1);
         } else if(register.equals("IP")){
             setIP(getIP()-1);
         } else {

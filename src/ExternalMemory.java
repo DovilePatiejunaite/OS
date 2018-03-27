@@ -3,7 +3,6 @@ public class ExternalMemory {
     private int last_readed = 0;
     private int last_free_space = 0;
     public ExternalMemory(){
-        System.out.println("Inicializuojama atmintis");
         for (int i = 0; i < array.length; i++){
             for (int j = 0; j < array[0].length; j++) {
                 array[i][j] = "        ";
