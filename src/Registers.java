@@ -1,8 +1,14 @@
+
 public class Registers {
     private int PTR, R, P, IP, CS, SS, SP, IR, TI, RE, CHST1, CHST2, CHST3, MODE, ERR, CF, ZF,SF;
     private String RS = "        ";
+    //nustatyti pradines kodo segmento ir steko segmento reiksmes;
 //SETERIAI
+    protected Memory m;
 
+    Registers(Memory m){
+        this.m = m;
+    }
 
     public void setRS(String RS) {
         if(RS.length()>8){
@@ -87,6 +93,10 @@ public class Registers {
             this.SP = SP;
         }
     }
+
+    //
+    //INTERUPTO APDOROJIMAS, nusistacius IR registrui!
+    //
     public void setIR(int IR) {
         if(IR>99){
             System.out.println("Registro IR reikšmė netelpa į rėžius!");
@@ -94,7 +104,7 @@ public class Registers {
             this.IR = IR;
         }
 
-        setIP(IR);
+
     }
     public void setTI(int TI) {
         if(TI>99){

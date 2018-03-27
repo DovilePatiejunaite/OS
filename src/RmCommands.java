@@ -1,17 +1,17 @@
 import java.util.Scanner;
 
 public class RmCommands extends VmCommands{
-    RmCommands(){
-        VmCommands s = new VmCommands();
+    RmCommands(Memory m){
+        super(m);
     }
 
-    public void prt(Memory m, int adress) {
+    public void prt(int adress) {
         String i = m.getFromArray(adress);
         System.out.println(i);
         INC("IP");
     }
 
-    public void wrt(Memory m, int adress) {
+    public void wrt(int adress) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Įveskite iki 8 simbolių, įvedimui į atmintį:");
         String input = "";
@@ -60,7 +60,7 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
     //1 bloko skaitymas iš disko. 10 žodžių
-    public void readh(ExternalMemory em, Memory m, int adress){
+    public void readh(ExternalMemory em, int adress){
         int last = em.getLast_readed();
         for (int i = last; i<last+10; i++){
             m.setArrayWord(em.getFromArray(i),adress);
@@ -82,5 +82,10 @@ public class RmCommands extends VmCommands{
     }
 
     //IRET
+    //Timeris
+    public void setTI(int ti){
+        setTI(ti);
+        INC("IP");
+    }
 
 }

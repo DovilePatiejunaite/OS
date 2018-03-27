@@ -1,4 +1,4 @@
-public class Memory {
+public class Memory{
     private String[][] array = new String[800][1];
     //Konstruktorius
     //interuptai nuo 0-39
@@ -14,7 +14,6 @@ public class Memory {
             }
         }
     }
-
     public void setArray(String[][] array) {
         this.array = array;
     }

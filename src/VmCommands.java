@@ -2,8 +2,12 @@
 import java.util.*;
 import java.io.*;
 public class VmCommands extends Registers{
+    VmCommands(Memory m){
+        super(m);
+    }
     //konstruktorius
-
+    //IP+CS!!!
+    //SS+SP!!!
     //funkcija tikrinanti ar neperžiangiami registrų rėžiai
     private void overflow(int last) {
         if(last>99999999){
@@ -17,10 +21,11 @@ public class VmCommands extends Registers{
             setR(last);
             setCF(0);
         }
+        timer();
     }
 
     //aritmetinės komandos
-    public void add(Memory m, int adress){
+    public void add(int adress){
         String i = m.getFromArray(adress);
         int value = Integer.parseInt(i);
         int last = getR()+value;
@@ -31,8 +36,9 @@ public class VmCommands extends Registers{
     //    if(Integer.toBinaryString(last).substring(0,1).equals("1")){
         setSF(0);
         INC("IP");
+        timer();
     }
-    public void sub(Memory m, int adress){
+    public void sub(int adress){
         String i = m.getFromArray(adress);
         int value = Integer.parseInt(i);
         int last = getR()-value;
@@ -44,8 +50,9 @@ public class VmCommands extends Registers{
             setSF(1);
         } else setSF(0);
         INC("IP");
+        timer();
     }
-    public void mul(Memory m, int adress){
+    public void mul( int adress){
         String i = m.getFromArray(adress);
         int value = Integer.parseInt(i);
         int last = getR()*value;
@@ -54,8 +61,9 @@ public class VmCommands extends Registers{
             setZF(1);
         } else setZF(0);
         INC("IP");
+        timer();
     }
-    public void div(Memory m, int adress){
+    public void div(int adress){
         String i = m.getFromArray(adress);
         int value = Integer.parseInt(i);
         int last = getR()/value;
@@ -64,8 +72,9 @@ public class VmCommands extends Registers{
             setZF(1);
         } else setZF(0);
         INC("IP");
+        timer();
     }
-    public void mod(Memory m, int adress){
+    public void mod(int adress){
         String i = m.getFromArray(adress);
         int value = Integer.parseInt(i);
         int last = getR()%value;
@@ -75,9 +84,10 @@ public class VmCommands extends Registers{
         } else setZF(0);
         //set carry flag
         INC("IP");
+        timer();
     }
     //loginės komandos
-    public void and(Memory m, int adress){
+    public void and(int adress){
         String i = m.getFromArray(adress);
         int value = Integer.parseInt(i);
         int last = getR()&value;
@@ -90,8 +100,9 @@ public class VmCommands extends Registers{
             setP(Integer.parseInt(second));
         } else setZF(0);
         INC("IP");
+        timer();
     }
-    public void or(Memory m, int adress){
+    public void or(int adress){
         String i = m.getFromArray(adress);
         int value = Integer.parseInt(i);
         int last = getR()|value;
@@ -100,8 +111,9 @@ public class VmCommands extends Registers{
             setZF(1);
         } else setZF(0);
         INC("IP");
+        timer();
     }
-    public void xor(Memory m, int adress){
+    public void xor( int adress){
         String i = m.getFromArray(adress);
         int value = Integer.parseInt(i);
         int last = getR()^value;
@@ -110,6 +122,7 @@ public class VmCommands extends Registers{
             setZF(1);
         } else setZF(0);
         INC("IP");
+        timer();
     }
     public void not(){
         int last = ~getR();
@@ -117,28 +130,33 @@ public class VmCommands extends Registers{
         if(getR() == 0){
             setZF(1);
         } else setZF(0);
+        timer();
         INC("IP");
     }
     //Duomenims apdoroti skirtos komandos
-    public void load(Memory m, int adress){
+    public void load(int adress){
         String i = m.getFromArray(adress);
         int value = Integer.parseInt(i);
         setR(value);
         INC("IP");
+        timer();
     }
-    public void store(Memory m, int adress){
+    public void store(int adress){
         String str = String.valueOf(getR());
         m.setArrayWord(str,adress);
         INC("IP");
+        timer();
     }
     public void storeString(Memory m, int adress){
         m.setArrayWord(getRS(),adress);
         INC("IP");
+        timer();
     }
-    public void loadString(Memory m, int adress){
+    public void loadString( int adress){
         String i = m.getFromArray(adress);
         setRS(i);
         INC("IP");
+        timer();
     }
     //desinej 4 baitai
     public void loadJ(int bytes) {
@@ -147,6 +165,7 @@ public class VmCommands extends Registers{
         String second = String.valueOf(bytes);
         setR(Integer.parseInt(first.concat(second)));
         INC("IP");
+        timer();
     }
     //kairej
     public void loadS(int bytes) {
@@ -155,6 +174,7 @@ public class VmCommands extends Registers{
         String second = s.substring(4,s.length());
         setR(Integer.parseInt(first.concat(second)));
         INC("IP");
+        timer();
     }
     //desinej 4 baitai
     public void loadStringJ(String bytes) {
@@ -162,6 +182,7 @@ public class VmCommands extends Registers{
         String first = s.substring(0,4);
         setRS(first.concat(bytes));
         INC("IP");
+        timer();
     }
     //kairej
     public void loadStringS(String bytes) {
@@ -169,9 +190,10 @@ public class VmCommands extends Registers{
         String second = s.substring(4,s.length());
         setRS(bytes.concat(second));
         INC("IP");
+        timer();
     }
     //Palyginimo komandos
-    public void cpr(Memory m, int adress){
+    public void cpr(int adress){
         String i = m.getFromArray(adress);
         int value = Integer.parseInt(i);
         int last = getR()-value;
@@ -183,33 +205,39 @@ public class VmCommands extends Registers{
         } else setSF(0);
         //jei ZF = 1, tai reikšmės lygios. Jei SF = 1, tai didesnis adresas, jei SF = 0, didesnis registras.
         INC("IP");
+        timer();
     }
-    public void cps(Memory m, int adress){
+    public void cps(int adress){
         String i = m.getFromArray(adress);
         if(i.equals(getRS())){
             setZF(1);
         } else setZF(0);
         //Palygina dvi eilutes, jei lygios ZF=1.
         INC("IP");
+        timer();
     }
     //Įvedimo/išvedimo komandos.
     public void print(){
         setIR(4);
         INC("IP");
+        timer();
     }
     public void write() {
         setIR(3);
         INC("IP");
+        timer();
     }
     //Valdymo perdavimo komandos
     public void go(int adress){
         setIP(adress);
+        timer();
     }
     //vartotojo programos vykdymo programa
     public void halt(String command){
         setIR(1);
         //sukelia pertraukima 1
         //grazina i realia masina kaip buvo pries VM isijungiant
+        timer();
     }
 
     //Sąlyginio valdymo perdavimo komandos
@@ -217,89 +245,114 @@ public class VmCommands extends Registers{
         if(getZF() == 1){
             setIP(adress);
         }
+        timer();
     }
     public void jn(int adress){
         if(getZF() == 0){
             setIP(adress);
         }
+        timer();
     }
     public void jl(int adress){
         if(getSF() == 1){
             setIP(adress);
         }
+        timer();
     }
     public void jg(int adress){
         if(getSF() == 0){
             setIP(adress);
         }
+        timer();
     }
     public void jo(int adress){
         if(getCF() == 1){
             setIP(adress);
         }
+        timer();
     }
     //Steko valdymo komandos
     //flagai??
-    public void push(Memory memory){
+    public void push(){
         String s = String.valueOf(getR());
-        memory.setArrayWord(s,getSS()+getSP());
+        m.setArrayWord(s,getSS()+getSP());
         DEC("SP");
         INC("IP");
+        timer();
     }
 
-    public void pushs(Memory memory){
-        memory.setArrayWord(getRS(),getSS()+getSP());
+    public void pushs(){
+        m.setArrayWord(getRS(),getSS()+getSP());
         DEC("SP");
         INC("IP");
+        timer();
     }
-    public void pop(Memory memory){
-        int i = Integer.parseInt(memory.getFromArray(getSS()+getSP()));
+    public void pop(){
+        int i = Integer.parseInt(m.getFromArray(getSS()+getSP()));
         setR(i);
         INC("SP");
         INC("IP");
+        timer();
     }
-    public void pops(Memory memory){
-        String s = memory.getFromArray(getSS()+getSP());
+    public void pops(){
+        String s = m.getFromArray(getSS()+getSP());
         setRS(s);
         INC("SP");
         INC("IP");
+        timer();
     }
-    public void clears(Memory memory){
+    public void clears(){
         for(int i=700;i<800;i++){
-            memory.setArrayWord("        ", i);
+            m.setArrayWord("        ", i);
         }
         setSP(0000);
         INC("IP");
+        timer();
     }
-    public void pushm(Memory memory, int adress){
-        String m = memory.getFromArray(adress);
-        memory.setArrayWord(m,getSP()+getSS());
+    public void pushm(int adress){
+        String s = m.getFromArray(adress);
+        m.setArrayWord(s,getSP()+getSS());
         DEC("SP");
         INC("IP");
+        timer();
     }
-    public void popm(Memory memory, int adress){
-        String s = memory.getFromArray(getSS()+getSP());
-        memory.setArrayWord(s,adress);
+    public void popm(int adress){
+        String s = m.getFromArray(getSS()+getSP());
+        m.setArrayWord(s,adress);
         INC("SP");
         INC("IP");
+        timer();
     }
     //supushina flagu registrus i steką tokia tvarka: CF,SF,ZF
-    public void pushf(Memory memory){
-        memory.setArrayWord(String.valueOf(getCF()),getSS()+getSP());
+    public void pushf(){
+        m.setArrayWord(String.valueOf(getCF()),getSS()+getSP());
         DEC("SP");
-        memory.setArrayWord(String.valueOf(getSF()),getSS()+getSP());
+        m.setArrayWord(String.valueOf(getSF()),getSS()+getSP());
         DEC("SP");
-        memory.setArrayWord(String.valueOf(getZF()),getSS()+getSP());
+        m.setArrayWord(String.valueOf(getZF()),getSS()+getSP());
         DEC("SP");
         INC("IP");
+        timer();
     }
     //HDD
     public void readhard(){
         setIR(6);
         INC("IP");
+        timer();
     }
     public void writehard(){
         setIR(5);
         INC("IP");
+        timer();
+    }
+    //taimerio paleidimas ar sustabdymas priklausomai nuo mode.esant timeriui 0 user mode nustatomas pertraukimas
+    public void timer(){
+        if(getMODE()==0){
+            setTI(getTI()-1);
+            if(getTI()==0){
+                setIR(2);
+            }
+        }
+
     }
 }
