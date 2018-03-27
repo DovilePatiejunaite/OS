@@ -26,7 +26,9 @@ public class RmCommands extends VmCommands{
         m.setArrayWord(input, adress);
         INC("IP");
     }
-
+    //setMODE 0 - USER, 1 - SUPERVISOR
+    //JEI MODE 0 - VM ISIJUNGIA IR PUSLAPIAVMIMAS VYKDOMAS, IP, CS IKELIAMI IS STEKO;
+    //JEI REALI MASINA ISIJUNGIA ?
     public void setM(int mode){
        setMODE(mode);
         INC("IP");
@@ -57,10 +59,28 @@ public class RmCommands extends VmCommands{
         DEC(register);
         INC("IP");
     }
-
-    public void readh(ExternalMemory em, Memory m){
+    //1 bloko skaitymas iš disko. 10 žodžių
+    public void readh(ExternalMemory em, Memory m, int adress){
+        int last = em.getLast_readed();
+        for (int i = last; i<last+10; i++){
+            m.setArrayWord(em.getFromArray(i),adress);
+            i++;
+            adress++;
+            em.setLast_readed(em.getLast_readed()+1);
+        }
+        INC("IP");
+    }
+    //1 bloko rašymas į diską.
+    public void writeh(ExternalMemory em, Memory m, int adress){
+        for (int i = 0; i<10; i++){
+            em.setArrayWord(m.getFromArray(i),adress);
+            i++;
+            adress++;
+            em.setLast_free_space(em.getLast_free_space()+10);
+        }
         INC("IP");
     }
 
+    //IRET
 
 }

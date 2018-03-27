@@ -30,7 +30,6 @@ public class VmCommands extends Registers{
         } else setZF(0);
     //    if(Integer.toBinaryString(last).substring(0,1).equals("1")){
         setSF(0);
-        //set carry flag
         INC("IP");
     }
     public void sub(Memory m, int adress){
@@ -41,7 +40,6 @@ public class VmCommands extends Registers{
         if(getR() == 0){
             setZF(1);
         } else setZF(0);
-   //     if(Integer.toBinaryString(last).substring(0,1).equals("1")){
         if(last<0){
             setSF(1);
         } else setSF(0);
@@ -196,13 +194,12 @@ public class VmCommands extends Registers{
     }
     //Įvedimo/išvedimo komandos.
     public void print(){
-        INC("IP");
         setIR(4);
+        INC("IP");
     }
     public void write() {
-        INC("IP");
         setIR(3);
-
+        INC("IP");
     }
     //Valdymo perdavimo komandos
     public void go(int adress){
@@ -210,6 +207,7 @@ public class VmCommands extends Registers{
     }
     //vartotojo programos vykdymo programa
     public void halt(String command){
+        setIR(1);
         //sukelia pertraukima 1
         //grazina i realia masina kaip buvo pries VM isijungiant
     }
@@ -285,14 +283,23 @@ public class VmCommands extends Registers{
         INC("SP");
         INC("IP");
     }
-
+    //supushina flagu registrus i steką tokia tvarka: CF,SF,ZF
+    public void pushf(Memory memory){
+        memory.setArrayWord(String.valueOf(getCF()),getSS()+getSP());
+        DEC("SP");
+        memory.setArrayWord(String.valueOf(getSF()),getSS()+getSP());
+        DEC("SP");
+        memory.setArrayWord(String.valueOf(getZF()),getSS()+getSP());
+        DEC("SP");
+        INC("IP");
+    }
     //HDD
     public void readhard(){
-        INC("IP");
         setIR(6);
+        INC("IP");
     }
     public void writehard(){
-        INC("IP");
         setIR(5);
+        INC("IP");
     }
 }
