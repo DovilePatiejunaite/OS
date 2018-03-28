@@ -87,7 +87,6 @@ public class RmCommands extends VmCommands{
        int inter = getIR();
         //kodas
 
-
     }
     public void setRmCS(int cs){
         setCS(cs);
@@ -98,5 +97,21 @@ public class RmCommands extends VmCommands{
         setTI(ti);
         INC("IP");
     }
+
+    public void setChnannel(int r){
+        SETCH(r);
+        INC("IP");
+    }
+    public void clearChnannel(int r){
+        CLRCH(r);
+        INC("IP");
+    }
+
+    public void checkChnannel(int r){
+        setCF(getCHST1());
+        INC("IP");
+    }
+
+    //kanalų valdymas
 
 }
