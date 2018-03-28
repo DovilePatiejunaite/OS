@@ -274,8 +274,7 @@ public class VmCommands extends Registers{
         }
         timer();
     }
-    //Steko valdymo komandos
-    //flagai??
+    //Eilės duomenų struktūros valdymo komandos. FIFO principas
     public void push(){
         String s = String.valueOf(getR());
         m.setArrayWord(s,getQS()+getQP());
@@ -329,7 +328,7 @@ public class VmCommands extends Registers{
         INC("IP");
         timer();
     }
-    //supushina flagu registrus i steką tokia tvarka: CF,SF,ZF
+    //supushina flagu registrus i eilę.
     public void pushf(){
         String whole = String.valueOf(getCF()).concat(String.valueOf(getSF()));
         String last = whole.concat(String.valueOf(getZF()));
@@ -362,8 +361,19 @@ public class VmCommands extends Registers{
         INC("IP");
         timer();
     }
+
+    public void setmQS(int adress){
+        setQS(adress);
+        INC("IP");
+    }
+
+    public void setmQP(int adress){
+        setQP(adress);
+        INC("IP");
+    }
+
     //taimerio paleidimas ar sustabdymas priklausomai nuo mode.esant timeriui 0 user mode nustatomas pertraukimas
-    public void timer(){
+    private void timer(){
         if(getMODE()==0){
             setTI(getTI()-1);
             if(getTI()==0){

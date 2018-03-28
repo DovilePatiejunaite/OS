@@ -104,7 +104,7 @@ public class Registers {
             this.IR = IR;
         }
         setMODE(1);
-        Interupts interupt = new Interupts(m);
+        Interrupts interrupt = new Interrupts(m,IR);
     }
     public void setTI(int TI) {
         if(TI>99){
