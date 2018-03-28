@@ -1,4 +1,4 @@
-public class Memory{
+public class Memory extends AdrMechanism{
     private String[][] array = new String[800][1];
     //Konstruktorius
     //interuptai nuo 0-39
@@ -23,8 +23,14 @@ public class Memory{
     public String[][] getArray() {
         return array;
     }
-
     public String getFromArray(int adress){
         return array[adress][0];
     }
+
+    public int findFreeSpace(){
+        for(){
+
+        }
+    }
+
 }
