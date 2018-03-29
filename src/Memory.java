@@ -1,5 +1,5 @@
 public class Memory extends AdrMechanism{
-    private String[][] array = new String[800][1];
+    private String[] array = new String[800];
     //Konstruktorius
     //interuptai nuo 0-39
     //duomnys - vm 40-699
@@ -7,30 +7,21 @@ public class Memory extends AdrMechanism{
     public Memory(){
         System.out.println("M KONSTR");
         for (int i = 0; i < array.length; i++){
-            for (int j = 0; j < array[0].length; j++) {
-                array[i][j] = "        ";
+                array[i]= "        ";
                 //komentaras
-
-            }
         }
     }
-    public void setArray(String[][] array) {
+    public void setArray(String[] array) {
         this.array = array;
     }
     public void setArrayWord(String word, int adress) {
-        this.array[adress][0] = String.format("%8s", word);
+        this.array[adress] = String.format("%8s", word);
     }
-    public String[][] getArray() {
+    public String[] getArray() {
         return array;
     }
     public String getFromArray(int adress){
-        return array[adress][0];
-    }
-
-    public int findFreeSpace(){
-        for(){
-
-        }
+        return array[adress];
     }
 
 }

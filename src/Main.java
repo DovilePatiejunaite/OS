@@ -6,6 +6,8 @@ public class Main {
         v.setR(9999);
         v.setCS(0000);
         m.setArrayWord("5",3);
+      //  m.setArrayWord("6", 19);
+        m.setArrayWord("7", 28);
         ExternalMemory ex = new ExternalMemory();
         //System.out.println(m.getFromArray(0));
        // System.out.println(v.getIP());
@@ -20,8 +22,8 @@ public class Main {
         //v.prt(m,3);
         //System.out.println(s);
 
-        System.out.println(m.getFromArray(3));
-        v.wrt(4);
+        int block = m.findFreeSpace(m.getArray(),0,699);
+        System.out.println(block);
         //is vm-rm adreso kontevrtavimas!!!
     }
 }

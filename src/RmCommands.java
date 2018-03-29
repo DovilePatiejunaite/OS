@@ -112,6 +112,16 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
 
+    public void ptr(int value){
+        setPTR(value);
+        INC("IP");
+    }
+
+
+
+    //Išskirti atminti VM.
+    //paleisti, nustatyt ptr
+
     //kanalų valdymas
 
 }
