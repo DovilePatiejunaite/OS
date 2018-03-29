@@ -1,7 +1,23 @@
 
 public class Registers {
-    private int PTR, R, P, IP, CS, QS, QP, IR, TI, RE, CHST1, CHST2, CHST3, MODE, ERR, CF, ZF,SF;
+    private int  IR, CHST1, CHST2, CHST3, MODE, CF, ZF,SF;
     private String RS = "        ";
+    private String PTR = "0000";
+    private String R = "00000000";
+    private String P = "00000000";
+    private String IP = "0000";
+    private String CS = "0000";
+    private String QS = "0000";
+    private String QP = "0000";
+    private String TI = "00";
+    private String ERR = "00";
+    private String RE = "00";
+
+
+
+
+
+
     //nustatyti pradines kodo segmento ir steko segmento reiksmes;
 //SETERIAI
     protected Memory m;
@@ -18,8 +34,8 @@ public class Registers {
         }
     }
 
-    public void setP(int P) {
-        if(P>99999999){
+    public void setP(String P) {
+        if(P.length()>8){
             System.out.println("Registro P reikšmė netelpa į rėžius!");
         } else {
             this.P = P;
@@ -50,44 +66,44 @@ public class Registers {
         return ZF;
     }
 
-    public void setCS(int CS) {
-        if(CS>9999){
+    public void setCS(String CS) {
+        if(CS.length()>4){
             System.out.println("Registro CS reikšmė netelpa į rėžius!");
         } else {
             this.CS = CS;
         }
     }
-    public void setIP(int IP) {
-        if(IP>9999){
+    public void setIP(String IP) {
+        if(IP.length()>4){
             System.out.println("Registro IP reikšmė netelpa į rėžius!");
         } else {
             this.IP = IP;
         }
     }
-    public void setPTR(int PTR) {
-        if(PTR>9999){
+    public void setPTR(String PTR) {
+        if(PTR.length()>4){
             System.out.println("Registro PTR reikšmė netelpa į rėžius!");
         } else {
             this.PTR = PTR;
         }
     }
-    public void setR(int R) {
-        if(R>99999999){
+    public void setR(String R) {
+        if(R.length()>8){
             System.out.println("Registro R reikšmė netelpa į rėžius!");
         } else {
             this.R = R;
         }
     }
 
-    public void setQS(int QS) {
-        if(QS>9999){
+    public void setQS(String QS) {
+        if(QS.length()>4){
             System.out.println("Registro QS reikšmė netelpa į rėžius!");
         } else {
             this.QS = QS;
         }
     }
-    public void setQP(int QP) {
-        if(QP>9999){
+    public void setQP(String QP) {
+        if(QP.length()>4){
             System.out.println("Registro QP reikšmė netelpa į rėžius!");
         } else {
             this.QP = QP;
@@ -106,23 +122,23 @@ public class Registers {
         setMODE(1);
         Interrupts interrupt = new Interrupts(m,IR);
     }
-    public void setTI(int TI) {
-        if(TI>99){
+    public void setTI(String TI) {
+        if(TI.length()>2){
             System.out.println("Registro TI reikšmė netelpa į rėžius!");
         } else {
             this.TI = TI;
         }
         //pertraukimas jei TI ==0??
     }
-    public void setRE(int RE) {
-        if(RE>99){
+    public void setRE(String RE) {
+        if(RE.length()>2){
             System.out.println("Registro RE reikšmė netelpa į rėžius!");
         } else {
             this.RE = RE;
         }
     }
-    public void setERR(int ERR) {
-        if(ERR>99){
+    public void setERR(String ERR) {
+        if(ERR.length()>2){
             System.out.println("Registro ERR reikšmė netelpa į rėžius!");
         } else {
             this.ERR = ERR;
@@ -174,7 +190,7 @@ public class Registers {
         return CHST1;
     }
 
-    public int getCS() {
+    public String getCS() {
         return CS;
     }
 
@@ -182,7 +198,7 @@ public class Registers {
         return CHST2;
     }
 
-    public int getIP() {
+    public String getIP() {
         return IP;
     }
 
@@ -194,7 +210,7 @@ public class Registers {
         return IR;
     }
 
-    public int getPTR() {
+    public String getPTR() {
         return PTR;
     }
 
@@ -202,28 +218,28 @@ public class Registers {
         return MODE;
     }
 
-    public int getR() {
+    public String getR() {
         return R;
     }
 
-    public int getRE() {
+    public String getRE() {
         return RE;
     }
 
 
-    public int getQP() {
+    public String getQP() {
         return QP;
     }
 
-    public int getQS() {
+    public String getQS() {
         return QS;
     }
 
-    public int getTI() {
+    public String getTI() {
         return TI;
     }
 
-    public int getERR() {
+    public String getERR() {
         return ERR;
     }
 
@@ -231,7 +247,7 @@ public class Registers {
         return SF;
     }
 
-    public int getP() {
+    public String getP() {
         return P;
     }
 
@@ -260,23 +276,22 @@ public class Registers {
     public void INC(String register){
         //switch
         if(register.equals("TI")){
-            setTI(getTI()+1);
+            setTI(String.valueOf(Integer.parseInt(getTI())+1));
         } else if(register.equals("QP")){
-            setQP(getQP()+1);
+            setQP(String.valueOf(Integer.parseInt(getQP())+1));
         } else if(register.equals("IP")){
-            setIP(getIP()+1);
+            setIP(String.valueOf(Integer.parseInt(getIP())+1));
         } else {
             System.out.println("Neegzistuoja tos registras!");
         }
     }
     public void DEC(String register){
         if(register.equals("TI")){
-            setTI(getTI()-1);
-            //pertrraukimas jei TI = 0??
+            setTI(String.valueOf(Integer.parseInt(getTI())-1));
         } else if(register.equals("QP")){
-            setQP(getQP()-1);
+            setQP(String.valueOf(Integer.parseInt(getQP())-1));
         } else if(register.equals("IP")){
-            setIP(getIP()-1);
+            setIP(String.valueOf(Integer.parseInt(getIP())-1));
         } else {
             System.out.println("Neegzistuoja tos registras!");
         }

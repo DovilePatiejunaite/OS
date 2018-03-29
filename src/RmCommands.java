@@ -88,12 +88,12 @@ public class RmCommands extends VmCommands{
         //kodas
 
     }
-    public void setRmCS(int cs){
+    public void setRmCS(String cs){
         setCS(cs);
         INC("IP");
     }
     //Timeris
-    public void setTimer(int ti){
+    public void setTimer(String ti){
         setTI(ti);
         INC("IP");
     }
@@ -112,7 +112,7 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
 
-    public void ptr(int value){
+    public void ptr(String value){
         setPTR(value);
         INC("IP");
     }

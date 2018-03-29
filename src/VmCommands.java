@@ -1,6 +1,5 @@
 
 import java.util.*;
-import java.io.*;
 public class VmCommands extends Registers{
     VmCommands(Memory m){
         super(m);
@@ -15,11 +14,11 @@ public class VmCommands extends Registers{
             String str = String.valueOf(last);
             String first = str.substring(0,4);
             String second = str.substring(4,str.length());
-            setR(Integer.parseInt(first));
-            setP(Integer.parseInt(second));
+            setR(first);
+            setP(second);
             setCF(1);
         } else {
-            setR(last);
+            setR(String.format("%08d",last));
             setCF(0);
         }
         timer();
@@ -27,11 +26,11 @@ public class VmCommands extends Registers{
 
     //aritmetinės komandos
     public void add(int adress){
-        String i = m.getFromArray(adress+getCS());
-        int value = Integer.parseInt(i);
-        int last = getR()+value;
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
+        int value = Integer.parseInt(i.trim());
+        int last = Integer.parseInt(getR())+value;
         overflow(last);
-        if(getR() == 0) {
+        if(Integer.parseInt(getR()) == 0) {
             setZF(1);
         } else setZF(0);
     //    if(Integer.toBinaryString(last).substring(0,1).equals("1")){
@@ -40,11 +39,11 @@ public class VmCommands extends Registers{
         timer();
     }
     public void sub(int adress){
-        String i = m.getFromArray(adress+getCS());
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i);
-        int last = getR()-value;
-        setR(last);
-        if(getR() == 0){
+        int last = Integer.parseInt(getR())-value;
+        setR(String.valueOf(last));
+        if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
         if(last<0){
@@ -54,33 +53,33 @@ public class VmCommands extends Registers{
         timer();
     }
     public void mul( int adress){
-        String i = m.getFromArray(getCS()+adress);
+        String i = m.getFromArray(Integer.parseInt(getCS())+adress);
         int value = Integer.parseInt(i);
-        int last = getR()*value;
+        int last = Integer.parseInt(getR())*value;
         overflow(last);
-        if(getR() == 0){
+        if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
         INC("IP");
         timer();
     }
     public void div(int adress){
-        String i = m.getFromArray(adress+getCS());
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i);
-        int last = getR()/value;
-        setR(last);
-        if(getR() == 0){
+        int last = Integer.parseInt(getR())/value;
+        setR(String.format("%08d",last));
+        if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
         INC("IP");
         timer();
     }
     public void mod(int adress){
-        String i = m.getFromArray(adress+getCS());
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i);
-        int last = getR()%value;
-        setR(last);
-        if(getR() == 0){
+        int last = Integer.parseInt(getR())%value;
+        setR(String.format("%08d",last));
+        if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
         //set carry flag
@@ -89,46 +88,42 @@ public class VmCommands extends Registers{
     }
     //loginės komandos
     public void and(int adress){
-        String i = m.getFromArray(adress+getCS());
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i);
-        int last = getR()&value;
-        setR(last);
-        if(getR() == 0){
-            setZF(1);            String str = String.valueOf(last);
-            String first = str.substring(0,4);
-            String second = str.substring(4,str.length());
-            setR(Integer.parseInt(first));
-            setP(Integer.parseInt(second));
+        int last = Integer.parseInt(getR())&value;
+        setR(String.format("%08d",last));
+        if(Integer.parseInt(getR()) == 0){
+            setZF(1);
         } else setZF(0);
         INC("IP");
         timer();
     }
     public void or(int adress){
-        String i = m.getFromArray(adress+getCS());
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i);
-        int last = getR()|value;
-        setR(last);
-        if(getR() == 0){
+        int last = Integer.parseInt(getR())|value;
+        setR(String.format("%08d",last));
+        if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
         INC("IP");
         timer();
     }
     public void xor( int adress){
-        String i = m.getFromArray(adress+getCS());
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i);
-        int last = getR()^value;
-        setR(last);
-        if(getR() == 0){
+        int last = Integer.parseInt(getR())^value;
+        setR(String.format("%08d",last));
+        if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
         INC("IP");
         timer();
     }
     public void not(){
-        int last = ~getR();
-        setR(last);
-        if(getR() == 0){
+        int last = ~Integer.parseInt(getR());
+        setR(String.format("%08d",last));
+        if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
         timer();
@@ -136,50 +131,49 @@ public class VmCommands extends Registers{
     }
     //Duomenims apdoroti skirtos komandos
     public void load(int adress){
-        String i = m.getFromArray(adress+getCS());
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i);
-        setR(value);
+        setR(String.format("%08d",value));
         INC("IP");
         timer();
     }
     public void store(int adress){
-        String str = String.valueOf(getR()+getCS());
-        m.setArrayWord(str,adress);
+        m.setArrayWord(getR(),adress);
         INC("IP");
         timer();
     }
     public void storeString(Memory m, int adress){
-        m.setArrayWord(getRS(),adress+getCS());
+        m.setArrayWord(getRS(),adress+Integer.parseInt(getCS()));
         INC("IP");
         timer();
     }
     public void loadString( int adress){
-        String i = m.getFromArray(adress+getCS());
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         setRS(i);
         INC("IP");
         timer();
     }
     //desinej 4 baitai
     public void loadJ(int bytes) {
-        String s = String.format("%08d", getR());
+        String s = getR();
         String first = s.substring(0,4);
         String second = String.valueOf(bytes);
-        setR(Integer.parseInt(first.concat(second)));
+        setR(first.concat(second));
         INC("IP");
         timer();
     }
     //kairej
     public void loadS(int bytes) {
-        String s = String.format("%08d", getR());
+        String s = getR();
         String first = String.valueOf(bytes);
         String second = s.substring(4,s.length());
-        setR(Integer.parseInt(first.concat(second)));
+        setR(first.concat(second));
         INC("IP");
         timer();
     }
     //desinej 4 baitai
     public void loadStringJ(String bytes) {
-        String s = String.format("%8s", getRS());
+        String s = getRS();
         String first = s.substring(0,4);
         setRS(first.concat(bytes));
         INC("IP");
@@ -195,9 +189,9 @@ public class VmCommands extends Registers{
     }
     //Palyginimo komandos
     public void cpr(int adress){
-        String i = m.getFromArray(adress+getCS());
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i);
-        int last = getR()-value;
+        int last = Integer.parseInt(getR())-value;
         if(last == 0){
             setZF(1);
         } else setZF(0);
@@ -209,7 +203,7 @@ public class VmCommands extends Registers{
         timer();
     }
     public void cps(int adress){
-        String i = m.getFromArray(adress+getCS());
+        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         if(i.equals(getRS())){
             setZF(1);
         } else setZF(0);
@@ -219,24 +213,24 @@ public class VmCommands extends Registers{
     }
     //Įvedimo/išvedimo komandos.
     public void print(int adress){
-        setR(adress+getCS());
+        setR(String.valueOf(adress+Integer.parseInt(getCS())));
         setIR(4);
         INC("IP");
         timer();
     }
     public void write(int adress) {
-        setR(adress+getCS());
+        setR(String.valueOf(adress+Integer.parseInt(getCS())));
         setIR(3);
         INC("IP");
         timer();
     }
     //Valdymo perdavimo komandos
-    public void go(int adress){
+    public void go(String adress){
         setIP(adress);
         timer();
     }
     //vartotojo programos vykdymo pabaiga
-    public void halt(String command){
+    public void halt(){
         setIR(1);
         //sukelia pertraukima 1
         //grazina i realia masina kaip buvo pries VM isijungiant
@@ -244,31 +238,31 @@ public class VmCommands extends Registers{
     }
 
     //Sąlyginio valdymo perdavimo komandos
-    public void je(int adress){
+    public void je(String adress){
         if(getZF() == 1){
             setIP(adress);
         }
         timer();
     }
-    public void jn(int adress){
+    public void jn(String adress){
         if(getZF() == 0){
             setIP(adress);
         }
         timer();
     }
-    public void jl(int adress){
+    public void jl(String adress){
         if(getSF() == 1){
             setIP(adress);
         }
         timer();
     }
-    public void jg(int adress){
+    public void jg(String adress){
         if(getSF() == 0){
             setIP(adress);
         }
         timer();
     }
-    public void jo(int adress){
+    public void jo(String adress){
         if(getCF() == 1){
             setIP(adress);
         }
@@ -277,30 +271,30 @@ public class VmCommands extends Registers{
     //Eilės duomenų struktūros valdymo komandos. FIFO principas
     public void push(){
         String s = String.valueOf(getR());
-        m.setArrayWord(s,getQS()+getQP());
+        m.setArrayWord(s,Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
         INC("IP");
         timer();
     }
 
     public void pushs(){
-        m.setArrayWord(getRS(),getQS()+getQP());
+        m.setArrayWord(getRS(),Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
         INC("IP");
         timer();
     }
     public void pop(){
-        int i = Integer.parseInt(m.getFromArray(getQS()+getQP()));
+        String i = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         setR(i);
-        m.setArrayWord("",getQS()+getQP());
+        m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         DEC("QP");
         INC("IP");
         timer();
     }
     public void pops(){
-        String s = m.getFromArray(getQS()+getQP());
+        String s = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         setRS(s);
-        m.setArrayWord("",getQS()+getQP());
+        m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         DEC("QP");
         INC("IP");
         timer();
@@ -309,21 +303,21 @@ public class VmCommands extends Registers{
         for(int i=700;i<800;i++){
             m.setArrayWord("        ", i);
         }
-        setQP(0000);
+        setQP("0000");
         INC("IP");
         timer();
     }
     public void pushm(int adress){
         String s = m.getFromArray(adress);
-        m.setArrayWord(s,getQP()+getQS());
+        m.setArrayWord(s,Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
         INC("IP");
         timer();
     }
     public void popm(int adress){
-        String s = m.getFromArray(getQS()+getQP());
+        String s = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         m.setArrayWord(s,adress);
-        m.setArrayWord("",getQS()+getQP());
+        m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         DEC("QP");
         INC("IP");
         timer();
@@ -332,17 +326,17 @@ public class VmCommands extends Registers{
     public void pushf(){
         String whole = String.valueOf(getCF()).concat(String.valueOf(getSF()));
         String last = whole.concat(String.valueOf(getZF()));
-        m.setArrayWord(last,getQS()+getQP());
+        m.setArrayWord(last,Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
         INC("IP");
         timer();
     }
     public void popf(){
-        String whole = m.getFromArray(getQS()+getQP());
+        String whole = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         int cf = Integer.parseInt(whole.substring(4,5));
         int sf = Integer.parseInt(whole.substring(5,6));
         int zf = Integer.parseInt(whole.substring(6,7));
-        m.setArrayWord("",getQS()+getQP());
+        m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         setCF(cf);
         setSF(sf);
         setZF(zf);
@@ -351,7 +345,8 @@ public class VmCommands extends Registers{
         timer();
     }
     //HDD
-    public void readhard(){
+    public void readhard(String adress){
+        setR(adress);
         setIR(6);
         INC("IP");
         timer();
@@ -362,12 +357,12 @@ public class VmCommands extends Registers{
         timer();
     }
 
-    public void setmQS(int adress){
+    public void setmQS(String adress){
         setQS(adress);
         INC("IP");
     }
 
-    public void setmQP(int adress){
+    public void setmQP(String adress){
         setQP(adress);
         INC("IP");
     }
@@ -375,8 +370,8 @@ public class VmCommands extends Registers{
     //taimerio paleidimas ar sustabdymas priklausomai nuo mode.esant timeriui 0 user mode nustatomas pertraukimas
     private void timer(){
         if(getMODE()==0){
-            setTI(getTI()-1);
-            if(getTI()==0){
+            setTI(String.valueOf(Integer.parseInt(getTI())-1));
+            if(Integer.parseInt(getTI())==0){
                 setIR(2);
             }
         }

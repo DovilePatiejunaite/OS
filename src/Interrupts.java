@@ -4,34 +4,34 @@ public class Interrupts extends Registers{
         super(m);
         setInterrupt(interrupt);
         String intadress = m.getFromArray(getInterrupt());
-        int cs = Integer.parseInt(intadress.substring(0,3));
-        int ip = Integer.parseInt(intadress.substring(3,7));
+        String cs = intadress.substring(0,3);
+        String ip = intadress.substring(3,7);
         setCS(cs);
         setIP(ip);
+        int adress = Integer.parseInt(getQS())+Integer.parseInt(getQP());
         //PTR
         //10 ZODZIU VIENAI VIRTUALIAI MASINAI, eilės duomenų struktūroje(ji prasideda nuo 0700 ir iki 0799)
         //PTR,CS, IP, R, P, RS, QS, QP, ERR, (CF, SF, ZF);
-        m.setArrayWord(String.valueOf(getPTR()),getQS()+getQP());
+        m.setArrayWord(String.valueOf(getPTR()),adress);
         INC("QP");
-        m.setArrayWord(String.valueOf(getCS()),getQS()+getQP());
+        m.setArrayWord(String.valueOf(getCS()),adress);
         INC("QP");
-        m.setArrayWord(String.valueOf(getIP()),getQS()+getQP());
+        m.setArrayWord(String.valueOf(getIP()),adress);
         INC("QP");
-        m.setArrayWord(String.valueOf(getR()),getQS()+getQP());
+        m.setArrayWord(String.valueOf(getR()),adress);
         INC("QP");
-        m.setArrayWord(String.valueOf(getP()),getQS()+getQP());
+        m.setArrayWord(String.valueOf(getP()),adress);
         INC("QP");
-        m.setArrayWord(String.valueOf(getRS()),getQS()+getQP());
+        m.setArrayWord(String.valueOf(getRS()),adress);
         INC("QP");
-        m.setArrayWord(String.valueOf(getQS()),getQS()+getQP());
+        m.setArrayWord(String.valueOf(getQS()),adress);
         INC("QP");
-        m.setArrayWord(String.valueOf(getQP()),getQS()+getQP());
+        m.setArrayWord(String.valueOf(getQP()),adress);
         INC("QP");
-        m.setArrayWord(String.valueOf(getERR()),getQS()+getQP());
+        m.setArrayWord(String.valueOf(getERR()),adress);
         INC("QP");
-        String whole = String.valueOf(getCF()).concat(String.valueOf(getSF()));
-        String last = whole.concat(String.valueOf(getZF()));
-        m.setArrayWord(last,getQS()+getQP());
+        String flags = String.valueOf(getCF())+getSF()+getZF();
+        m.setArrayWord(flags,adress);
         INC("QP");
     }
 
