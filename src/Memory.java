@@ -24,4 +24,30 @@ public class Memory extends AdrMechanism{
         return array[adress];
     }
 
+    public void printInterruptTable(){
+        for(int i=0;i<40;i++){
+            System.out.println(i+"-"+array[i]);
+        }
+    }
+
+    public void printCS(){
+        for(int i=40;i<700;i++){
+            System.out.println(i+"-"+array[i]);
+        }
+    }
+
+    public void printSS(){
+        for(int i=700;i<800;i++){
+            System.out.println(i+"-"+array[i]);
+        }
+    }
+
+    //paskutinis virtualios masinos ip arba vm programos dydis.
+
+    public void printVM(int PTR, int lastIP){
+        for(int i=0;i<lastIP;i++){
+            String word = getFromArray(realWordAdress(array,PTR,i));
+            System.out.println(word);
+        }
+    }
 }
