@@ -13,7 +13,7 @@ public class AdrMechanism{
                 if(array[i].equals("        ")){
                     free++;
                 } else {
-                    i+=10;
+                    i+=9;
                 }
             } else if(free!=0){
                 if(array[i].equals("        ")){

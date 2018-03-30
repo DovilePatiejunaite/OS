@@ -7,7 +7,6 @@ public class Main {
         for(int i = 0;i<800;i++){
             System.out.println(i+m.getArray()[i]);
         }
-        System.out.println(m.getArray());
         //is vm-rm adreso kontevrtavimas!!!
     }
 }

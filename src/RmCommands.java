@@ -103,16 +103,57 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
     //IRET - grįžimo į VM funkcija.
-    //Prieš pertraukimo apdorojimą viskas sudėta buvo tokia tvarka PTR,IP, R, P, RS, SS, SP, ERR, (CF, SF, ZF);
+    //Prieš pertraukimo apdorojimą viskas sudėta buvo tokia tvarka PTR,IP, R, P, RS, SS, SP, ERR-negrazinamas, (CF, SF, ZF);
     public void iret(){
-
-
-
-
-        String i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        setR(String.format("%08d",i.trim()));
+        //FLAGAI
+        String whole = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        int cf = Integer.parseInt(whole.substring(4,5));
+        int sf = Integer.parseInt(whole.substring(5,6));
+        int zf = Integer.parseInt(whole.substring(6,7));
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        setCF(cf);
+        setSF(sf);
+        setZF(zf);
+        DEC("SP");
+        //ERR
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         DEC("SP");
+        //SP
+        String last_sp = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
+        //SS
+        String last_ss = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
+        //RS
+        String i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())).trim();
+        setRS(i);
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
+        //P
+        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())).trim();
+        setP(i.trim());
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
+        //R
+        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())).trim();
+        setR(i.trim());
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
+        //IP
+        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())).trim();
+        setIP(i.trim());
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
+        //PTR
+        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())).trim();
+        setPTR(i.trim());
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
+        setSP(last_sp.trim());
+        setSS(last_ss.trim());
+        setERR("00");
         INC("IP");
     }
     //Timeris
@@ -159,10 +200,6 @@ public class RmCommands extends VmCommands{
         int which_block = ip/10;
         m.setArrayWord(String.valueOf(block), Integer.parseInt(getPTR().substring(1,3))+which_block);
     }
-
-    //Išskirti atminti VM.+
-    //paleisti, nustatyt ptr+
-    //iret
 
     public void RMBtoMemory(int adress){
         m.setArrayWord(getRMB(), adress);

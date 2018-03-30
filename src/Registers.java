@@ -1,3 +1,4 @@
+import com.sun.deploy.util.StringUtils;
 
 public class Registers {
     //Registrai inicializuojami rm pradiniais registrais.
@@ -13,7 +14,7 @@ public class Registers {
     private String TI = "00";
     private String ERR = "00";
     private String RE = "00";
-    //paskutinės dierbusios mašinos sp
+    //paskutinėst dierbusios mašinos sp
     private String RMB = "0000";
 
 
@@ -23,9 +24,11 @@ public class Registers {
     Registers(Memory m){
         this.m = m;
     }
-
+    //idet patikrinima
+    //registrai kurie string pavidalo laiko vien integerius, kaip patikrinti, kad neatsirastu raides? - idet error
     public void setRMB(String RMB) {
-        this.RMB = RMB;
+        this.RMB = String.format("%04d",Integer.parseInt(RMB));
+
     }
 
     public String getRMB() {
@@ -36,7 +39,7 @@ public class Registers {
         if(RS.length()>8){
             System.out.println("Registro RS reikšmė netelpa į rėžius!");
         } else {
-            this.RS = RS;
+            this.RS = String.format("%4s",RS);
         }
     }
 
@@ -44,7 +47,7 @@ public class Registers {
         if(P.length()>8){
             System.out.println("Registro P reikšmė netelpa į rėžius!");
         } else {
-            this.P = P;
+            this.P = String.format("%08d",Integer.parseInt(P));
         }
     }
 
@@ -76,28 +79,28 @@ public class Registers {
         if(CS.length()>4){
             System.out.println("Registro CS reikšmė netelpa į rėžius!");
         } else {
-            this.CS = CS;
+            this.CS = String.format("%04d",Integer.parseInt(CS));
         }
     }
     public void setIP(String IP) {
         if(IP.length()>4){
             System.out.println("Registro IP reikšmė netelpa į rėžius!");
         } else {
-            this.IP = IP;
+            this.IP = String.format("%04d",Integer.parseInt(IP));
         }
     }
     public void setPTR(String PTR) {
         if(PTR.length()>4){
             System.out.println("Registro PTR reikšmė netelpa į rėžius!");
         } else {
-            this.PTR = PTR;
+            this.PTR = String.format("%04d",Integer.parseInt(PTR));
         }
     }
     public void setR(String R) {
         if(R.length()>8){
             System.out.println("Registro R reikšmė netelpa į rėžius!");
         } else {
-            this.R = R;
+            this.R = String.format("%08d",Integer.parseInt(R));
         }
     }
 
@@ -105,14 +108,14 @@ public class Registers {
         if(SS.length()>4){
             System.out.println("Registro SS reikšmė netelpa į rėžius!");
         } else {
-            this.SS = SS;
+            this.SS = String.format("%04d",Integer.parseInt(SS));
         }
     }
     public void setSP(String SP) {
         if(SP.length()>4){
             System.out.println("Registro SP reikšmė netelpa į rėžius!");
         } else {
-            this.SP = SP;
+            this.SP = String.format("%04d",Integer.parseInt(SP));
         }
     }
 
@@ -134,7 +137,7 @@ public class Registers {
         if(TI.length()>2){
             System.out.println("Registro TI reikšmė netelpa į rėžius!");
         } else {
-            this.TI = TI;
+            this.TI = String.format("%02d",Integer.parseInt(TI));
         }
         //pertraukimas jei TI ==0??
     }
@@ -142,14 +145,14 @@ public class Registers {
         if(RE.length()>2){
             System.out.println("Registro RE reikšmė netelpa į rėžius!");
         } else {
-            this.RE = RE;
+            this.RE = String.format("%02d",Integer.parseInt(RE));
         }
     }
     public void setERR(String ERR) {
         if(ERR.length()>2){
             System.out.println("Registro ERR reikšmė netelpa į rėžius!");
         } else {
-            this.ERR = ERR;
+            this.ERR = String.format("%02d",Integer.parseInt(ERR));
         }
     }
     public void setSF(int SF) {

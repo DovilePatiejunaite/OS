@@ -18,7 +18,7 @@ public class VmCommands extends Registers{
             setP(second);
             setCF(1);
         } else {
-            setR(String.format("%08d",last));
+            setR(String.valueOf(last));
             setCF(0);
         }
         timer();
@@ -68,7 +68,7 @@ public class VmCommands extends Registers{
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())/value;
-        setR(String.format("%08d",last));
+        setR(String.valueOf(last));
         if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
@@ -79,7 +79,7 @@ public class VmCommands extends Registers{
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())%value;
-        setR(String.format("%08d",last));
+        setR(String.valueOf(last));
         if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
@@ -92,7 +92,7 @@ public class VmCommands extends Registers{
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())&value;
-        setR(String.format("%08d",last));
+        setR(String.valueOf(last));
         if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
@@ -103,7 +103,7 @@ public class VmCommands extends Registers{
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())|value;
-        setR(String.format("%08d",last));
+        setR(String.valueOf(last));
         if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
@@ -114,7 +114,7 @@ public class VmCommands extends Registers{
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())^value;
-        setR(String.format("%08d",last));
+        setR(String.valueOf(last));
         if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
@@ -123,7 +123,7 @@ public class VmCommands extends Registers{
     }
     public void not(){
         int last = ~Integer.parseInt(getR());
-        setR(String.format("%08d",last));
+        setR(String.valueOf(last));
         if(Integer.parseInt(getR()) == 0){
             setZF(1);
         } else setZF(0);
@@ -133,8 +133,7 @@ public class VmCommands extends Registers{
     //Duomenims apdoroti skirtos komandos
     public void load(int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i.trim());
-        setR(String.format("%08d",value));
+        setR(i.trim());
         INC("IP");
         timer();
     }
@@ -269,8 +268,7 @@ public class VmCommands extends Registers{
     }
     //Eilės duomenų struktūros valdymo komandos. FIFO principas
     public void push(){
-        String s = String.valueOf(getR());
-        m.setArrayWord(s,Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        m.setArrayWord(getR(),Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         INC("SP");
         INC("IP");
         timer();
@@ -284,7 +282,7 @@ public class VmCommands extends Registers{
     }
     public void pop(){
         String i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        setR(String.format("%08d",i.trim()));
+        setR(i.trim());
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         DEC("SP");
         INC("IP");
