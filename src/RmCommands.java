@@ -5,6 +5,19 @@ public class RmCommands extends VmCommands{
         super(m);
         System.out.println("RM KONSTR");
     }
+
+    //Virtualios mašinos klaidų kodai
+    private String[] errorsVM = {
+           "OK",
+           "eroras1",
+           "eroras2"
+    };
+    //Realios mašinos klaidų kodai
+    private String[] errorsRM = {
+            "OK",
+            "eroras1",
+            "eroras2"
+    };
     //(nuo 0000 iki 0039 - pertraukimų vektorių lentelė)CS = 0040 SS = 0700 - nekeičiamas.
     //vektorių lentelei pasiekti ir rašyti - atskiros komandos
     public void prt(int adress) {
@@ -216,5 +229,13 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
 
+    public void printERR(){
+        System.out.println(getERR()+" "+errorsVM[Integer.parseInt(getERR())]);
+        INC("IP");
+    }
+    public void printRE(){
+        System.out.println(getRE()+" "+errorsVM[Integer.parseInt(getRE())]);
+        INC("IP");
+    }
     //kanalų valdymas
 }

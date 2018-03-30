@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
+        //TUI maine.
         Memory m = new Memory();
         RmCommands v = new RmCommands(m);
         v.createVirtualMachine();
@@ -8,5 +9,7 @@ public class Main {
             System.out.println(i+m.getArray()[i]);
         }
         //is vm-rm adreso kontevrtavimas!!!
+        v.setERR("01");
+        v.printERR();
     }
 }
