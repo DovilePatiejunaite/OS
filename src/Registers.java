@@ -1,5 +1,3 @@
-import com.sun.deploy.util.StringUtils;
-
 public class Registers {
     //Registrai inicializuojami rm pradiniais registrais.
     private int  IR, CHST1, CHST2, CHST3, MODE, CF, ZF,SF;
@@ -304,5 +302,13 @@ public class Registers {
         } else {
             System.out.println("Neegzistuoja tos registras!");
         }
+    }
+
+    public String String() {
+       return  "MODE: "+MODE
+               +"\nPTR: "+PTR+" CS: "+CS+" IP: "+IP+"\nR: "+R+" P: "+P+" RS: "+ RS + " SS: "+ SS+" SP:"+SP
+               +"\nTI: "+TI+" IR:"+IR+" RE: "+RE+" ERR: "+ERR+" RMB: "+RMB
+               +"\nCHST1: "+ CHST1+" CHST2: "+ CHST2+" CHST13 "+ CHST3
+               +"\nCF: "+CF+" SF: "+SF+" ZF: "+ZF+"\n";
     }
 }
