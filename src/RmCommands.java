@@ -10,13 +10,15 @@ public class RmCommands extends VmCommands{
     private String[] errorsVM = {
            "OK",
            "eroras1",
-           "eroras2"
+           "eroras2",
+            "Neteisingas adresas"
     };
     //Realios mašinos klaidų kodai
     private String[] errorsRM = {
             "OK",
             "eroras1",
-            "eroras2"
+            "eroras2",
+            "Neteisingas adresas"
     };
     //(nuo 0000 iki 0039 - pertraukimų vektorių lentelė)CS = 0040 SS = 0700 - nekeičiamas.
     //vektorių lentelei pasiekti ir rašyti - atskiros komandos
@@ -229,6 +231,22 @@ public class RmCommands extends VmCommands{
 
     public void loadInterruptVector(int interrupt){
         setR(m.getFromArray(interrupt));
+        INC("IP");
+    }
+    public void writeTI(int adress){
+        if(checkAdress(adress)==1) {
+            m.setArrayWord(getTI(), adress);
+        }else{
+            setERR("3");
+        }
+        INC("IP");
+    }
+    public void writePTR(int adress){
+        if(checkAdress(adress)==1) {
+            m.setArrayWord(getPTR(), adress);
+        }else{
+            setERR("3");
+        }
         INC("IP");
     }
 

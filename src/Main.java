@@ -7,11 +7,13 @@ public class Main {
         System.out.println(v.getPTR());
         v.getPTR();
         v.moreMemoryForVM(Integer.parseInt(v.getIP()));
+        //is vm-rm adreso kontevrtavimas!!!
+        v.writePTR(98);
+        v.writeP(101);
+        System.out.println(v.getMODE());
+        v.printERR();
         for(int i = 0;i<800;i++){
             System.out.println(i+m.getArray()[i]);
         }
-        //is vm-rm adreso kontevrtavimas!!!
-        v.setERR("01");
-        v.printERR();
     }
 }

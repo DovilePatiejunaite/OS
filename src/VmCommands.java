@@ -187,6 +187,43 @@ public class VmCommands extends Registers{
         INC("IP");
         timer();
     }
+    public void writeP(int adress){
+        if(checkAdress(adress)==1) {
+            m.setArrayWord(getP(), adress);
+        }else{
+            setERR("3");
+        }
+        INC("IP");
+        timer();
+    }
+    public void writeIP(int adress){
+        if(checkAdress(adress)==1) {
+            m.setArrayWord(getIP(), adress);
+        }else{
+            setERR("3");
+        }
+        INC("IP");
+        timer();
+    }
+    public void writeSP(int adress){
+        if(checkAdress(adress)==1) {
+            m.setArrayWord(getSP(), adress);
+        }else{
+            setERR("3");
+        }
+        INC("IP");
+        timer();
+    }
+    private void writeSS(int adress){
+        if(checkAdress(adress)==1) {
+            m.setArrayWord(getSS(), adress);
+        }else{
+            setERR("3");
+        }
+        INC("IP");
+        timer();
+    }
+
     //Palyginimo komandos
     public void cpr(int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
@@ -374,5 +411,26 @@ public class VmCommands extends Registers{
                 setIR(2);
             }
         }
+    }
+    //Funkcija, kuri patikrina pagal mode ar geras adresas
+    public int checkAdress(int adress){
+        int availability = 0;
+        if(getMODE()==1){
+            if(adress > 40 && adress < 700) {
+                availability = 1;
+            }else{
+                availability = 0;
+            }
+        }else if(getMODE()==0){
+            if((adress >= 0) && (adress <= 100)){
+                availability = 1;
+            }
+            else{
+                availability = 0;
+            }
+        }else{
+            System.out.println("Neatpažinta klaida");
+        }
+        return availability;
     }
 }

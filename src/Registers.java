@@ -1,5 +1,3 @@
-import com.sun.deploy.util.StringUtils;
-
 public class Registers {
     //Registrai inicializuojami rm pradiniais registrais.
     private int  IR, CHST1, CHST2, CHST3, MODE, CF, ZF,SF;
@@ -291,7 +289,7 @@ public class Registers {
         } else if(register.equals("IP")){
             setIP(String.valueOf(Integer.parseInt(getIP())+1));
         } else {
-            System.out.println("Neegzistuoja tos registras!");
+            System.out.println("Neegzistuoja toks registras!");
         }
     }
     public void DEC(String register){
