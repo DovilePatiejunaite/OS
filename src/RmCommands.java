@@ -211,7 +211,10 @@ public class RmCommands extends VmCommands{
     public void moreMemoryForVM(int ip){
         int block =  m.findFreeSpace(m.getArray());
         int which_block = ip/10;
-        m.setArrayWord(String.valueOf(block), Integer.parseInt(getPTR().substring(1,3))+which_block);
+        System.out.println(getPTR());
+        int ptr =  Integer.parseInt(getPTR())%100;
+        int adress = ptr*10+which_block;
+        m.setArrayWord(String.valueOf(block), adress);
     }
 
     public void RMBtoMemory(int adress){

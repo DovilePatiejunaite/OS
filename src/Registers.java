@@ -129,8 +129,6 @@ public class Registers {
             this.IR = IR;
         }
         setMODE(1);
-        setCS("0040");
-        setSS("0700");
         Interrupts interrupt = new Interrupts(m,IR);
     }
     public void setTI(String TI) {

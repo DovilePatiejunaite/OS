@@ -47,7 +47,7 @@ public class Memory extends AdrMechanism{
     public void printVM(int PTR, int lastIP){
         for(int i=0;i<lastIP;i++){
             String word = getFromArray(realWordAdress(array,PTR,i));
-            System.out.println(word);
+            System.out.println(i+"-"+word);
         }
     }
 }

@@ -4,6 +4,8 @@ public class Main {
         Memory m = new Memory();
         RmCommands v = new RmCommands(m);
         v.createVirtualMachine();
+        System.out.println(v.getPTR());
+        v.getPTR();
         v.moreMemoryForVM(Integer.parseInt(v.getIP()));
         for(int i = 0;i<800;i++){
             System.out.println(i+m.getArray()[i]);
