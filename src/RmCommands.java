@@ -5,7 +5,8 @@ public class RmCommands extends VmCommands{
         super(m);
         System.out.println("RM KONSTR");
     }
-    //(nuo 0000 iki 0039 - pertraukimų vektorių lentelė)CS = 0040, QS = 0700 - nekeičiami
+    //(nuo 0000 iki 0039 - pertraukimų vektorių lentelė)CS = 0040 SS = 0700 - nekeičiamas.
+    //vektorių lentelei pasiekti ir rašyti - atskiros komandos
     public void prt(int adress) {
         String i = m.getFromArray(adress);
         System.out.println(i);
@@ -31,17 +32,18 @@ public class RmCommands extends VmCommands{
     //JEI MODE 0 - VM ISIJUNGIA IR PUSLAPIAVMIMAS VYKDOMAS
     //jei nauja vm masina paleidziama : createNewVirtualMashine - nustatomas PTR registras naujas - tuomet kvieciama setM();
     //jei norima grizti po pertraukimo i tam tikra realia masina visu pirma su komanda IRET yra susigrazinami reikalingi
-    //registrai ir tada nustomas user mode;
+    //registrai ir tada nustomas setM();
     //cs - nesikeičia visais atvejais
     public void setM(){
-       setMODE(0);
+        setRMB(getCS()+getSP());
+        setMODE(0);
        setCS("0000");
-       //patikriname ar nauja virtuali mašina, o ne backupas iš eilės paimtas - jei nepaimtas backupas - QS bus vis dar
+       //patikriname ar nauja virtuali mašina, o ne backupas iš steko - jei nepaimtas backupas - SS bus vis dar
         //0700.
-       if(!getQS().equals("0700")){
+       if(!getSS().equals("0700")){
            //jei nauja mašina - visi jos registrai nustatomi pradinėmis reikšmėmis.
-           setQS("0090");
-           setQP("0000");
+           setSS("0090");
+           setSP("0000");
            setIP("0000");
            setR("00000000");
            setP("00000000");
@@ -101,16 +103,16 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
     //IRET - grįžimo į VM funkcija.
-    //Prieš pertraukimo apdorojimą viskas sudėta buvo tokia tvarka PTR,IP, R, P, RS, QS, QP, ERR, (CF, SF, ZF);
+    //Prieš pertraukimo apdorojimą viskas sudėta buvo tokia tvarka PTR,IP, R, P, RS, SS, SP, ERR, (CF, SF, ZF);
     public void iret(){
 
-        
 
 
-        String i = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
+
+        String i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         setR(String.format("%08d",i.trim()));
-        m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
-        DEC("QP");
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
         INC("IP");
     }
     //Timeris
@@ -160,7 +162,22 @@ public class RmCommands extends VmCommands{
 
     //Išskirti atminti VM.+
     //paleisti, nustatyt ptr+
-    //iret+
+    //iret
+
+    public void RMBtoMemory(int adress){
+        m.setArrayWord(getRMB(), adress);
+        INC("IP");
+    }
+
+    public void makeIntreruptVector(int adress, int interrupt){
+        m.setArrayWord("0040"+String.format("%04d",adress), interrupt);
+        INC("IP");
+    }
+
+    public void loadInterruptVector(int interrupt){
+        setR(m.getFromArray(interrupt));
+        INC("IP");
+    }
 
     //kanalų valdymas
 }

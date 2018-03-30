@@ -1,13 +1,13 @@
 public class AdrMechanism{
 
 
-//cs,qs - realios mašinos - žinomi išanksto
+//cs,SS - realios mašinos - žinomi išanksto
     public int findFreeSpace(String[] array) {
         int cs = 40;
-        int qs = 700;
+        int SS = 700;
         int block = 0;
         int free=0;
-        for(int i=cs;i<qs; i++) {
+        for(int i=cs;i<SS; i++) {
             if(i%10==0){
                 free = 0;
                 if(array[i].equals("        ")){

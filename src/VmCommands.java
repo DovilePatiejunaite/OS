@@ -1,14 +1,13 @@
-
 import java.util.*;
 public class VmCommands extends Registers{
     VmCommands(Memory m){
         super(m);
         System.out.println("VM KONSTR");
     }
-    //VM pradiniai cs=0;ip=0,qs=90, qp=0
+    //VM pradiniai cs=0;ip=0,SS=90, SP=0
     //cs nekeičiamas
     //IP+CS!!!
-    //QS+QP!!!
+    //SS+SP!!!
     //funkcija tikrinanti ar neperžiangiami registrų rėžiai ir nereikia atsakymo perkelinėti į papildomą registrą P
     private void overflow(int last) {
         if(last>99999999){
@@ -234,8 +233,6 @@ public class VmCommands extends Registers{
     //vartotojo programos vykdymo pabaiga
     public void halt(){
         setIR(1);
-        //sukelia pertraukima 1
-        //grazina i realia masina kaip buvo pries VM isijungiant
         timer();
     }
 
@@ -273,31 +270,31 @@ public class VmCommands extends Registers{
     //Eilės duomenų struktūros valdymo komandos. FIFO principas
     public void push(){
         String s = String.valueOf(getR());
-        m.setArrayWord(s,Integer.parseInt(getQS())+Integer.parseInt(getQP()));
-        INC("QP");
+        m.setArrayWord(s,Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        INC("SP");
         INC("IP");
         timer();
     }
 
     public void pushs(){
-        m.setArrayWord(getRS(),Integer.parseInt(getQS())+Integer.parseInt(getQP()));
-        INC("QP");
+        m.setArrayWord(getRS(),Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        INC("SP");
         INC("IP");
         timer();
     }
     public void pop(){
-        String i = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
+        String i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         setR(String.format("%08d",i.trim()));
-        m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
-        DEC("QP");
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
         INC("IP");
         timer();
     }
     public void pops(){
-        String s = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
+        String s = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         setRS(s);
-        m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
-        DEC("QP");
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
         INC("IP");
         timer();
     }
@@ -305,22 +302,22 @@ public class VmCommands extends Registers{
         for(int i=700;i<800;i++){
             m.setArrayWord("        ", i);
         }
-        setQP("0000");
+        setSP("0000");
         INC("IP");
         timer();
     }
     public void pushm(int adress){
         String s = m.getFromArray(adress);
-        m.setArrayWord(s,Integer.parseInt(getQS())+Integer.parseInt(getQP()));
-        INC("QP");
+        m.setArrayWord(s,Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        INC("SP");
         INC("IP");
         timer();
     }
     public void popm(int adress){
-        String s = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
+        String s = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         m.setArrayWord(s,adress);
-        m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
-        DEC("QP");
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        DEC("SP");
         INC("IP");
         timer();
     }
@@ -328,21 +325,21 @@ public class VmCommands extends Registers{
     public void pushf(){
         String whole = String.valueOf(getCF()).concat(String.valueOf(getSF()));
         String last = whole.concat(String.valueOf(getZF()));
-        m.setArrayWord(last,Integer.parseInt(getQS())+Integer.parseInt(getQP()));
-        INC("QP");
+        m.setArrayWord(last,Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        INC("SP");
         INC("IP");
         timer();
     }
     public void popf(){
-        String whole = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
+        String whole = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         int cf = Integer.parseInt(whole.substring(4,5));
         int sf = Integer.parseInt(whole.substring(5,6));
         int zf = Integer.parseInt(whole.substring(6,7));
-        m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
+        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         setCF(cf);
         setSF(sf);
         setZF(zf);
-        DEC("QP");
+        DEC("SP");
         INC("IP");
         timer();
     }
@@ -359,14 +356,16 @@ public class VmCommands extends Registers{
         timer();
     }
 
-    private void setmQS(String adress){
-        setQS(adress);
+    private void setmSS(String adress){
+        setSS(adress);
         INC("IP");
+        timer();
     }
 
-    private void setmQP(String adress){
-        setQP(adress);
+    private void setmSP(String adress){
+        setSP(adress);
         INC("IP");
+        timer();
     }
 
     //taimerio paleidimas ar sustabdymas priklausomai nuo mode.esant timeriui 0 user mode nustatomas pertraukimas

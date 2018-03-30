@@ -8,23 +8,28 @@ public class Registers {
     private String P = "00000000";
     private String IP = "0000";
     private String CS = "0040";
-    private String QS = "0700";
-    private String QP = "0000";
+    private String SS = "0700";
+    private String SP = "0000";
     private String TI = "00";
     private String ERR = "00";
     private String RE = "00";
+    //paskutinės dierbusios mašinos sp
+    private String RMB = "0000";
 
 
-
-
-
-
-    //nustatyti pradines kodo segmento ir steko segmento reiksmes;
 //SETERIAI
     protected Memory m;
 
     Registers(Memory m){
         this.m = m;
+    }
+
+    public void setRMB(String RMB) {
+        this.RMB = RMB;
+    }
+
+    public String getRMB() {
+        return RMB;
     }
 
     public void setRS(String RS) {
@@ -96,18 +101,18 @@ public class Registers {
         }
     }
 
-    public void setQS(String QS) {
-        if(QS.length()>4){
-            System.out.println("Registro QS reikšmė netelpa į rėžius!");
+    public void setSS(String SS) {
+        if(SS.length()>4){
+            System.out.println("Registro SS reikšmė netelpa į rėžius!");
         } else {
-            this.QS = QS;
+            this.SS = SS;
         }
     }
-    public void setQP(String QP) {
-        if(QP.length()>4){
-            System.out.println("Registro QP reikšmė netelpa į rėžius!");
+    public void setSP(String SP) {
+        if(SP.length()>4){
+            System.out.println("Registro SP reikšmė netelpa į rėžius!");
         } else {
-            this.QP = QP;
+            this.SP = SP;
         }
     }
 
@@ -122,7 +127,7 @@ public class Registers {
         }
         setMODE(1);
         setCS("0040");
-        setQS("0700");
+        setSS("0700");
         Interrupts interrupt = new Interrupts(m,IR);
     }
     public void setTI(String TI) {
@@ -230,12 +235,12 @@ public class Registers {
     }
 
 
-    public String getQP() {
-        return QP;
+    public String getSP() {
+        return SP;
     }
 
-    public String getQS() {
-        return QS;
+    public String getSS() {
+        return SS;
     }
 
     public String getTI() {
@@ -280,8 +285,8 @@ public class Registers {
         //switch
         if(register.equals("TI")){
             setTI(String.valueOf(Integer.parseInt(getTI())+1));
-        } else if(register.equals("QP")){
-            setQP(String.valueOf(Integer.parseInt(getQP())+1));
+        } else if(register.equals("SP")){
+            setSP(String.valueOf(Integer.parseInt(getSP())+1));
         } else if(register.equals("IP")){
             setIP(String.valueOf(Integer.parseInt(getIP())+1));
         } else {
@@ -291,8 +296,8 @@ public class Registers {
     public void DEC(String register){
         if(register.equals("TI")){
             setTI(String.valueOf(Integer.parseInt(getTI())-1));
-        } else if(register.equals("QP")){
-            setQP(String.valueOf(Integer.parseInt(getQP())-1));
+        } else if(register.equals("SP")){
+            setSP(String.valueOf(Integer.parseInt(getSP())-1));
         } else if(register.equals("IP")){
             setIP(String.valueOf(Integer.parseInt(getIP())-1));
         } else {
