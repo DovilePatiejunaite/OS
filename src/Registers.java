@@ -303,4 +303,12 @@ public class Registers {
             System.out.println("Neegzistuoja tos registras!");
         }
     }
+
+    public String String() {
+       return  "MODE: "+MODE
+               +"\nPTR: "+PTR+" CS: "+CS+" IP: "+IP+"\nR: "+R+" P: "+P+" RS: "+ RS + " SS: "+ SS+" SP:"+SP
+               +"\nTI: "+TI+" IR:"+IR+" RE: "+RE+" ERR: "+ERR+" RMB: "+RMB
+               +"\nCHST1: "+ CHST1+" CHST2: "+ CHST2+" CHST13 "+ CHST3
+               +"\nCF: "+CF+" SF: "+SF+" ZF: "+ZF+"\n";
+    }
 }
