@@ -8,30 +8,27 @@ public class Interrupts extends Registers{
         String ip = intadress.substring(3,7);
         setCS(cs);
         setIP(ip);
-        int adress = Integer.parseInt(getQS())+Integer.parseInt(getQP());
         //PTR
-        //10 ZODZIU VIENAI VIRTUALIAI MASINAI, eilės duomenų struktūroje(ji prasideda nuo 0700 ir iki 0799)
-        //PTR,CS, IP, R, P, RS, QS, QP, ERR, (CF, SF, ZF);
-        m.setArrayWord(String.valueOf(getPTR()),adress);
+        //VIENAI VIRTUALIAI MASINAI, eilės duomenų struktūroje(ji prasideda nuo 0700 ir iki 0799)
+        //PTR,IP, R, P, RS, QS, QP, ERR, (CF, SF, ZF);
+        m.setArrayWord(String.valueOf(getPTR()),Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
-        m.setArrayWord(String.valueOf(getCS()),adress);
+        m.setArrayWord(String.valueOf(getIP()),Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
-        m.setArrayWord(String.valueOf(getIP()),adress);
+        m.setArrayWord(String.valueOf(getR()),Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
-        m.setArrayWord(String.valueOf(getR()),adress);
+        m.setArrayWord(String.valueOf(getP()),Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
-        m.setArrayWord(String.valueOf(getP()),adress);
+        m.setArrayWord(String.valueOf(getRS()),Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
-        m.setArrayWord(String.valueOf(getRS()),adress);
+        m.setArrayWord(String.valueOf(getQS()),Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
-        m.setArrayWord(String.valueOf(getQS()),adress);
+        m.setArrayWord(String.valueOf(getQP()),Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
-        m.setArrayWord(String.valueOf(getQP()),adress);
-        INC("QP");
-        m.setArrayWord(String.valueOf(getERR()),adress);
+        m.setArrayWord(String.valueOf(getERR()),Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
         String flags = String.valueOf(getCF())+getSF()+getZF();
-        m.setArrayWord(flags,adress);
+        m.setArrayWord(flags,Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         INC("QP");
     }
 

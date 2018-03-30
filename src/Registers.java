@@ -1,13 +1,14 @@
 
 public class Registers {
+    //Registrai inicializuojami rm pradiniais registrais.
     private int  IR, CHST1, CHST2, CHST3, MODE, CF, ZF,SF;
     private String RS = "        ";
     private String PTR = "0000";
     private String R = "00000000";
     private String P = "00000000";
     private String IP = "0000";
-    private String CS = "0000";
-    private String QS = "0000";
+    private String CS = "0040";
+    private String QS = "0700";
     private String QP = "0000";
     private String TI = "00";
     private String ERR = "00";
@@ -120,6 +121,8 @@ public class Registers {
             this.IR = IR;
         }
         setMODE(1);
+        setCS("0040");
+        setQS("0700");
         Interrupts interrupt = new Interrupts(m,IR);
     }
     public void setTI(String TI) {

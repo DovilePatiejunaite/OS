@@ -4,9 +4,8 @@ public class RmCommands extends VmCommands{
     RmCommands(Memory m){
         super(m);
         System.out.println("RM KONSTR");
-
     }
-
+    //(nuo 0000 iki 0039 - pertraukimų vektorių lentelė)CS = 0040, QS = 0700 - nekeičiami
     public void prt(int adress) {
         String i = m.getFromArray(adress);
         System.out.println(i);
@@ -29,10 +28,29 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
     //setMODE 0 - USER, 1 - SUPERVISOR
-    //JEI MODE 0 - VM ISIJUNGIA IR PUSLAPIAVMIMAS VYKDOMAS, IP, CS IKELIAMI IS STEKO;
-    //JEI REALI MASINA ISIJUNGIA ?
+    //JEI MODE 0 - VM ISIJUNGIA IR PUSLAPIAVMIMAS VYKDOMAS
+    //jei nauja vm masina paleidziama : createNewVirtualMashine - nustatomas PTR registras naujas - tuomet kvieciama setM();
+    //jei norima grizti po pertraukimo i tam tikra realia masina visu pirma su komanda IRET yra susigrazinami reikalingi
+    //registrai ir tada nustomas user mode;
+    //cs - nesikeičia visais atvejais
     public void setM(){
        setMODE(0);
+       setCS("0000");
+       //patikriname ar nauja virtuali mašina, o ne backupas iš eilės paimtas - jei nepaimtas backupas - QS bus vis dar
+        //0700.
+       if(!getQS().equals("0700")){
+           //jei nauja mašina - visi jos registrai nustatomi pradinėmis reikšmėmis.
+           setQS("0090");
+           setQP("0000");
+           setIP("0000");
+           setR("00000000");
+           setP("00000000");
+           setRS("00000000");
+           setERR("00");
+           setCF(0);
+           setZF(0);
+           setSF(0);
+       }
        INC("IP");
     }
     public void inter(int number){
@@ -82,14 +100,17 @@ public class RmCommands extends VmCommands{
         }
         INC("IP");
     }
-    //IRET veikia priklausomai nuo koks interaptas buvo vykdytas
+    //IRET - grįžimo į VM funkcija.
+    //Prieš pertraukimo apdorojimą viskas sudėta buvo tokia tvarka PTR,IP, R, P, RS, QS, QP, ERR, (CF, SF, ZF);
     public void iret(){
-       int inter = getIR();
-        //kodas
 
-    }
-    public void setRmCS(String cs){
-        setCS(cs);
+        
+
+
+        String i = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
+        setR(String.format("%08d",i.trim()));
+        m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
+        DEC("QP");
         INC("IP");
     }
     //Timeris
@@ -117,11 +138,29 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
 
+    public void createVirtualMachine(){
+        int table_block = m.findFreeSpace(m.getArray());
+        setPTR("10"+String.format("%02d",table_block));
+        int block_adress = table_block*10;
+        for(int i=0;i<10;i++){
+            m.setArrayWord("-",block_adress+i);
+        }
+        INC("IP");
+    }
 
 
-    //Išskirti atminti VM.
-    //paleisti, nustatyt ptr
+//issikiriam vietos is vm->rm kur bus irasoma
+// IP yra virtualios mašinos (CS=0, adreso nekeičia)
+    //nėra komanda!! nedidina IP ir yra puslapiavimo dalis.
+    public void moreMemoryForVM(int ip){
+        int block =  m.findFreeSpace(m.getArray());
+        int which_block = ip/10;
+        m.setArrayWord(String.valueOf(block), Integer.parseInt(getPTR().substring(1,3))+which_block);
+    }
+
+    //Išskirti atminti VM.+
+    //paleisti, nustatyt ptr+
+    //iret+
 
     //kanalų valdymas
-
 }

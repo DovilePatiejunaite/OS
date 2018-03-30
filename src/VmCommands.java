@@ -5,10 +5,11 @@ public class VmCommands extends Registers{
         super(m);
         System.out.println("VM KONSTR");
     }
-    //konstruktorius
+    //VM pradiniai cs=0;ip=0,qs=90, qp=0
+    //cs nekeičiamas
     //IP+CS!!!
     //QS+QP!!!
-    //funkcija tikrinanti ar neperžiangiami registrų rėžiai
+    //funkcija tikrinanti ar neperžiangiami registrų rėžiai ir nereikia atsakymo perkelinėti į papildomą registrą P
     private void overflow(int last) {
         if(last>99999999){
             String str = String.valueOf(last);
@@ -25,6 +26,7 @@ public class VmCommands extends Registers{
     }
 
     //aritmetinės komandos
+    //imamas dabartinis CS, nes beveik visos komandos gali būti naudojamos ir VM ir RM, kuriose CS registras skiriasi.
     public void add(int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
         int value = Integer.parseInt(i.trim());
@@ -40,7 +42,7 @@ public class VmCommands extends Registers{
     }
     public void sub(int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i);
+        int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())-value;
         setR(String.valueOf(last));
         if(Integer.parseInt(getR()) == 0){
@@ -54,7 +56,7 @@ public class VmCommands extends Registers{
     }
     public void mul( int adress){
         String i = m.getFromArray(Integer.parseInt(getCS())+adress);
-        int value = Integer.parseInt(i);
+        int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())*value;
         overflow(last);
         if(Integer.parseInt(getR()) == 0){
@@ -65,7 +67,7 @@ public class VmCommands extends Registers{
     }
     public void div(int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i);
+        int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())/value;
         setR(String.format("%08d",last));
         if(Integer.parseInt(getR()) == 0){
@@ -76,7 +78,7 @@ public class VmCommands extends Registers{
     }
     public void mod(int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i);
+        int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())%value;
         setR(String.format("%08d",last));
         if(Integer.parseInt(getR()) == 0){
@@ -89,7 +91,7 @@ public class VmCommands extends Registers{
     //loginės komandos
     public void and(int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i);
+        int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())&value;
         setR(String.format("%08d",last));
         if(Integer.parseInt(getR()) == 0){
@@ -100,7 +102,7 @@ public class VmCommands extends Registers{
     }
     public void or(int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i);
+        int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())|value;
         setR(String.format("%08d",last));
         if(Integer.parseInt(getR()) == 0){
@@ -111,7 +113,7 @@ public class VmCommands extends Registers{
     }
     public void xor( int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i);
+        int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())^value;
         setR(String.format("%08d",last));
         if(Integer.parseInt(getR()) == 0){
@@ -132,7 +134,7 @@ public class VmCommands extends Registers{
     //Duomenims apdoroti skirtos komandos
     public void load(int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i);
+        int value = Integer.parseInt(i.trim());
         setR(String.format("%08d",value));
         INC("IP");
         timer();
@@ -190,7 +192,7 @@ public class VmCommands extends Registers{
     //Palyginimo komandos
     public void cpr(int adress){
         String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i);
+        int value = Integer.parseInt(i.trim());
         int last = Integer.parseInt(getR())-value;
         if(last == 0){
             setZF(1);
@@ -285,7 +287,7 @@ public class VmCommands extends Registers{
     }
     public void pop(){
         String i = m.getFromArray(Integer.parseInt(getQS())+Integer.parseInt(getQP()));
-        setR(i);
+        setR(String.format("%08d",i.trim()));
         m.setArrayWord("",Integer.parseInt(getQS())+Integer.parseInt(getQP()));
         DEC("QP");
         INC("IP");
@@ -357,12 +359,12 @@ public class VmCommands extends Registers{
         timer();
     }
 
-    public void setmQS(String adress){
+    private void setmQS(String adress){
         setQS(adress);
         INC("IP");
     }
 
-    public void setmQP(String adress){
+    private void setmQP(String adress){
         setQP(adress);
         INC("IP");
     }

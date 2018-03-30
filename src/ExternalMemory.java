@@ -1,29 +1,26 @@
 public class ExternalMemory {
-    private String[][] array = new String[2000][1];
+    private String[] array = new String[2000];
     private int last_read = 0;
     private int last_free_space = 0;
     public ExternalMemory(){
         for (int i = 0; i < array.length; i++){
-            for (int j = 0; j < array[0].length; j++) {
-                array[i][j] = "        ";
+                array[i] = "        ";
                 //komentaras
-
-            }
         }
     }
 
-    public void setArray(String[][] array) {
+    public void setArray(String[] array) {
         this.array = array;
     }
     public void setArrayWord(String word, int adress) {
-        this.array[adress][0] = String.format("%8s", word);
+        this.array[adress] = String.format("%8s", word);
     }
-    public String[][] getArray() {
+    public String[]getArray() {
         return array;
     }
 
     public String getFromArray(int adress){
-        return array[adress][0];
+        return array[adress];
     }
 
     public void setLast_read(int last_read) {

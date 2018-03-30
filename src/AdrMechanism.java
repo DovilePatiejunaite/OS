@@ -1,7 +1,10 @@
 public class AdrMechanism{
-    public int findFreeSpace(String[] array, String c, String q) {
-        int cs = Integer.parseInt(c);
-        int qs = Integer.parseInt(q);
+
+
+//cs,qs - realios mašinos - žinomi išanksto
+    public int findFreeSpace(String[] array) {
+        int cs = 40;
+        int qs = 700;
         int block = 0;
         int free=0;
         for(int i=cs;i<qs; i++) {
@@ -25,15 +28,11 @@ public class AdrMechanism{
         return block;
     }
 
-    public int realWordAdress(String[] array, String p, String i, String c){
-        int cs = Integer.parseInt(c);
-        int ip = Integer.parseInt(i);
-        int ptr = Integer.parseInt(p);
+    //ip, cs(visada 0, neverta apibrėžinėti ieškant adreso)- virtualios mašinos
+    public int realWordAdress(String[] array, int ptr, int ip){
         int block_number = ptr%100;
-        int whole = cs+ip;
-        int block = whole/10;
-        int word = whole%10;
-        int real_adress = ((Integer.parseInt(array[block_number*10]))+block)*10+word;
-        return real_adress;
+        int block = ip/10;
+        int word = ip%10;
+        return Integer.parseInt(array[block_number*10+block].trim())*10+word;
     }
 }
