@@ -54,8 +54,13 @@ public class TUI {
         System.out.println("*******************************************\n");
     }
 
+    //skaityti ir kompiliuoti komandas
 
-
+    public void commands(){
+        String line = input.nextLine();
+        String command = line.substring(0,4);
+        String parameters = line.substring(4,8);
+    }
     public void exit(){
         System.exit(1);
     }

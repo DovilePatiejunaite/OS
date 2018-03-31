@@ -330,9 +330,9 @@ public class VmCommands extends Registers{
     }
     public void popf(){
         String whole = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        int cf = Integer.parseInt(whole.substring(4,5));
-        int sf = Integer.parseInt(whole.substring(5,6));
-        int zf = Integer.parseInt(whole.substring(6,7));
+        int cf = Integer.parseInt(whole.substring(5,6));
+        int sf = Integer.parseInt(whole.substring(6,7));
+        int zf = Integer.parseInt(whole.substring(7,8));
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         setCF(cf);
         setSF(sf);

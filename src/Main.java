@@ -12,11 +12,11 @@ public class Main {
         //IP=0
 
         //IP=1
-        v.storeString(m, m.realWordAdress(m.getArray(),Integer.parseInt(v.getPTR()),Integer.parseInt(v.getIP())));
+     /*   v.storeString(m, m.realWordAdress(m.getArray(),Integer.parseInt(v.getPTR()),Integer.parseInt(v.getIP())));
         for(int i = 0;i<800;i++){
             System.out.println(i+m.getArray()[i]);
         }
-
+*/
         //is vm-rm adreso kontevrtavimas!!!
         v.setERR("01");
         v.printERR();
@@ -24,5 +24,7 @@ public class Main {
 
         //TUI tui = new TUI();
         //tui.start();
+        String s ="01234567";
+        System.out.println(s.substring(5,6));
     }
 }
