@@ -29,7 +29,7 @@ public class Interrupts extends Registers{
 
         setInterrupt(interrupt);
         String intadress = m.getFromArray(getInterrupt());
-        String ip = intadress.substring(3,7);
+        String ip = intadress.substring(4,8);
         setCS("0040");
         setIP(ip);
         setSS("0700");
