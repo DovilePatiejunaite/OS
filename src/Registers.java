@@ -25,8 +25,11 @@ public class Registers {
     //idet patikrinima
     //registrai kurie string pavidalo laiko vien integerius, kaip patikrinti, kad neatsirastu raides? - idet error
     public void setRMB(String RMB) {
-        this.RMB = String.format("%04d",Integer.parseInt(RMB));
-
+        if(RMB.length()>8){
+            setERR("7");
+        } else {
+            this.RMB = String.format("%04d",Integer.parseInt(RMB));
+        }
     }
 
     public String getRMB() {
@@ -35,7 +38,7 @@ public class Registers {
 
     public void setRS(String RS) {
         if(RS.length()>8){
-            System.out.println("Registro RS reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.RS = String.format("%4s",RS);
         }
@@ -43,7 +46,7 @@ public class Registers {
 
     public void setP(String P) {
         if(P.length()>8){
-            System.out.println("Registro P reikšmė netelpa į rėžius!");
+            setERR("7");;
         } else {
             this.P = String.format("%08d",Integer.parseInt(P));
         }
@@ -51,7 +54,7 @@ public class Registers {
 
     public void setCF(int CF) {
         if(CF>9||(CF!=0&&CF!=1)){
-            System.out.println("Netinkama registro CF reikšmė!");
+            setERR("7");
         } else {
             this.CF = CF;
         }
@@ -59,7 +62,7 @@ public class Registers {
 
     public void setZF(int ZF) {
         if(ZF>9||(ZF!=0&&ZF!=1)){
-            System.out.println("Netinkama registro ZF reikšmė!");
+            setERR("7");
         } else {
             this.ZF = ZF;
         }
@@ -75,28 +78,28 @@ public class Registers {
 
     public void setCS(String CS) {
         if(CS.length()>4){
-            System.out.println("Registro CS reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.CS = String.format("%04d",Integer.parseInt(CS));
         }
     }
     public void setIP(String IP) {
         if(IP.length()>4){
-            System.out.println("Registro IP reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.IP = String.format("%04d",Integer.parseInt(IP));
         }
     }
     public void setPTR(String PTR) {
         if(PTR.length()>4){
-            System.out.println("Registro PTR reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.PTR = String.format("%04d",Integer.parseInt(PTR));
         }
     }
     public void setR(String R) {
         if(R.length()>8){
-            System.out.println("Registro R reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.R = String.format("%08d",Integer.parseInt(R));
         }
@@ -104,14 +107,14 @@ public class Registers {
 
     public void setSS(String SS) {
         if(SS.length()>4){
-            System.out.println("Registro SS reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.SS = String.format("%04d",Integer.parseInt(SS));
         }
     }
     public void setSP(String SP) {
         if(SP.length()>4){
-            System.out.println("Registro SP reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.SP = String.format("%04d",Integer.parseInt(SP));
         }
@@ -122,7 +125,7 @@ public class Registers {
     //
     public void setIR(int IR) {
         if(IR>99){
-            System.out.println("Registro IR reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.IR = IR;
         }
@@ -131,7 +134,7 @@ public class Registers {
     }
     public void setTI(String TI) {
         if(TI.length()>2){
-            System.out.println("Registro TI reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.TI = String.format("%02d",Integer.parseInt(TI));
         }
@@ -139,49 +142,49 @@ public class Registers {
     }
     public void setRE(String RE) {
         if(RE.length()>2){
-            System.out.println("Registro RE reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.RE = String.format("%02d",Integer.parseInt(RE));
         }
     }
     public void setERR(String ERR) {
         if(ERR.length()>2){
-            System.out.println("Registro ERR reikšmė netelpa į rėžius!");
+            setERR("7");
         } else {
             this.ERR = String.format("%02d",Integer.parseInt(ERR));
         }
     }
     public void setSF(int SF) {
         if(SF>9||(SF!=0&&SF!=1)){
-            System.out.println("Netinkama registro SF reikšmė!");
+            setERR("7");
         } else {
             this.SF = SF;
         }
     }
     public void setCHST1(int CHST1) {
         if(CHST1>9||(CHST1!=0&&CHST1!=1)){
-            System.out.println("Netinkama registro CHST1 reikšmė!");
+            setERR("7");
         } else {
             this.CHST1 = CHST1;
         }
     }
     public void setCHST2(int CHST2) {
         if(CHST2>9||(CHST2!=0&&CHST2!=1)){
-            System.out.println("Netinkama registro CHST2 reikšmė!");
+            setERR("7");
         } else {
             this.CHST2 = CHST2;
         }
     }
     public void setCHST3(int CHST3) {
         if(CHST3>9||(CHST3!=0&&CHST3!=1)){
-            System.out.println("Netinkama registro CHST3 reikšmė!");
+            setERR("7");
         } else {
             this.CHST3 = CHST3;
         }
     }
     public void setMODE(int MODE) {
         if(MODE>9||(MODE!=0&&MODE!=1)){
-            System.out.println("Netinkama registro MODE reikšmė!");
+            setERR("7");
         } else {
             this.MODE = MODE;
         }
@@ -266,7 +269,7 @@ public class Registers {
         } else if (register==3){
             setCHST3(1);
         } else {
-            System.out.println("Neegzistuoja toks kanalas!");
+            setERR("6");
         }
     }
     public void CLRCH(int register){
@@ -277,7 +280,7 @@ public class Registers {
         } else if (register==3){
             setCHST3(0);
         } else {
-            System.out.println("Neegzistuoja toks kanalas!");
+            setERR("6");
         }
     }
     public void INC(String register){
@@ -289,7 +292,7 @@ public class Registers {
         } else if(register.equals("IP")){
             setIP(String.valueOf(Integer.parseInt(getIP())+1));
         } else {
-            System.out.println("Neegzistuoja toks registras!");
+            setERR("5");
         }
     }
     public void DEC(String register){
@@ -300,7 +303,7 @@ public class Registers {
         } else if(register.equals("IP")){
             setIP(String.valueOf(Integer.parseInt(getIP())-1));
         } else {
-            System.out.println("Neegzistuoja tos registras!");
+            setERR("5");
         }
     }
 

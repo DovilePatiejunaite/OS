@@ -27,97 +27,129 @@ public class VmCommands extends Registers{
     //aritmetinės komandos
     //imamas dabartinis CS, nes beveik visos komandos gali būti naudojamos ir VM ir RM, kuriose CS registras skiriasi.
     public void add(int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i.trim());
-        int last = Integer.parseInt(getR())+value;
-        overflow(last);
-        if(Integer.parseInt(getR()) == 0) {
-            setZF(1);
-        } else setZF(0);
-    //    if(Integer.toBinaryString(last).substring(0,1).equals("1")){
-        setSF(0);
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            int value = Integer.parseInt(i.trim());
+            int last = Integer.parseInt(getR())+value;
+            overflow(last);
+            if(Integer.parseInt(getR()) == 0) {
+                setZF(1);
+            } else setZF(0);
+            //if(Integer.toBinaryString(last).substring(0,1).equals("1")){
+            setSF(0);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void sub(int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i.trim());
-        int last = Integer.parseInt(getR())-value;
-        setR(String.valueOf(last));
-        if(Integer.parseInt(getR()) == 0){
-            setZF(1);
-        } else setZF(0);
-        if(last<0){
-            setSF(1);
-        } else setSF(0);
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            int value = Integer.parseInt(i.trim());
+            int last = Integer.parseInt(getR())-value;
+            setR(String.valueOf(last));
+            if(Integer.parseInt(getR()) == 0){
+                setZF(1);
+            } else setZF(0);
+            if(last<0){
+                setSF(1);
+            } else setSF(0);;
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void mul( int adress){
-        String i = m.getFromArray(Integer.parseInt(getCS())+adress);
-        int value = Integer.parseInt(i.trim());
-        int last = Integer.parseInt(getR())*value;
-        overflow(last);
-        if(Integer.parseInt(getR()) == 0){
-            setZF(1);
-        } else setZF(0);
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            int value = Integer.parseInt(i.trim());
+            int last = Integer.parseInt(getR())*value;
+            overflow(last);
+            if(Integer.parseInt(getR()) == 0){
+                setZF(1);
+            } else setZF(0);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void div(int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i.trim());
-        int last = Integer.parseInt(getR())/value;
-        setR(String.valueOf(last));
-        if(Integer.parseInt(getR()) == 0){
-            setZF(1);
-        } else setZF(0);
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            int value = Integer.parseInt(i.trim());
+            int last = Integer.parseInt(getR())/value;
+            setR(String.valueOf(last));
+            if(Integer.parseInt(getR()) == 0){
+                setZF(1);
+            } else setZF(0);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void mod(int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i.trim());
-        int last = Integer.parseInt(getR())%value;
-        setR(String.valueOf(last));
-        if(Integer.parseInt(getR()) == 0){
-            setZF(1);
-        } else setZF(0);
-        //set carry flag
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            int value = Integer.parseInt(i.trim());
+            int last = Integer.parseInt(getR())%value;
+            setR(String.valueOf(last));
+            if(Integer.parseInt(getR()) == 0){
+                setZF(1);
+            } else setZF(0);
+            //set carry flag
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     //loginės komandos
     public void and(int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i.trim());
-        int last = Integer.parseInt(getR())&value;
-        setR(String.valueOf(last));
-        if(Integer.parseInt(getR()) == 0){
-            setZF(1);
-        } else setZF(0);
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            int value = Integer.parseInt(i.trim());
+            int last = Integer.parseInt(getR())&value;
+            setR(String.valueOf(last));
+            if(Integer.parseInt(getR()) == 0){
+                setZF(1);
+            } else setZF(0);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void or(int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i.trim());
-        int last = Integer.parseInt(getR())|value;
-        setR(String.valueOf(last));
-        if(Integer.parseInt(getR()) == 0){
-            setZF(1);
-        } else setZF(0);
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            int value = Integer.parseInt(i.trim());
+            int last = Integer.parseInt(getR())|value;
+            setR(String.valueOf(last));
+            if(Integer.parseInt(getR()) == 0){
+                setZF(1);
+            } else setZF(0);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void xor( int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i.trim());
-        int last = Integer.parseInt(getR())^value;
-        setR(String.valueOf(last));
-        if(Integer.parseInt(getR()) == 0){
-            setZF(1);
-        } else setZF(0);
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            int value = Integer.parseInt(i.trim());
+            int last = Integer.parseInt(getR())^value;
+            setR(String.valueOf(last));
+            if(Integer.parseInt(getR()) == 0){
+                setZF(1);
+            } else setZF(0);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
@@ -132,24 +164,40 @@ public class VmCommands extends Registers{
     }
     //Duomenims apdoroti skirtos komandos
     public void load(int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        setR(i.trim());
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            setR(i.trim());
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void store(int adress){
-        m.setArrayWord(getR(),adress);
+        if(checkAdress(adress)==1) {
+            m.setArrayWord(getR(),adress);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void storeString(Memory m, int adress){
-        m.setArrayWord(getRS(),adress+Integer.parseInt(getCS()));
+        if(checkAdress(adress)==1) {
+            m.setArrayWord(getRS(), adress);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void loadString( int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        setRS(i);
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            setRS(i);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
@@ -226,38 +274,55 @@ public class VmCommands extends Registers{
 
     //Palyginimo komandos
     public void cpr(int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        int value = Integer.parseInt(i.trim());
-        int last = Integer.parseInt(getR())-value;
-        if(last == 0){
-            setZF(1);
-        } else setZF(0);
-        if(last<0){
-            setSF(1);
-        } else setSF(0);
-        //jei ZF = 1, tai reikšmės lygios. Jei SF = 1, tai didesnis adresas, jei SF = 0, didesnis registras.
+        if(checkAdress(adress)==1) {
+            String i = m.getFromArray(adress);
+            int value = Integer.parseInt(i.trim());
+            int last = Integer.parseInt(getR()) - value;
+            if (last == 0) {
+                setZF(1);
+            } else setZF(0);
+            if (last < 0) {
+                setSF(1);
+            } else setSF(0);
+            //jei ZF = 1, tai reikšmės lygios. Jei SF = 1, tai didesnis adresas, jei SF = 0, didesnis registras.
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void cps(int adress){
-        String i = m.getFromArray(adress+Integer.parseInt(getCS()));
-        if(i.equals(getRS())){
-            setZF(1);
-        } else setZF(0);
-        //Palygina dvi eilutes, jei lygios ZF=1.
+        if(checkAdress(adress)==1){
+             String i = m.getFromArray(adress);
+            //String i = m.getFromArray(adress);
+            if(i.equals(getRS())){
+                setZF(1);
+            } else setZF(0);
+            //Palygina dvi eilutes, jei lygios ZF=1.
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     //Įvedimo/išvedimo komandos.
     public void print(int adress){
-        setR(String.valueOf(adress+Integer.parseInt(getCS())));
-        setIR(4);
+        if(checkAdress(adress)==1) {
+            setR(String.valueOf(adress));
+            setIR(4);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }
     public void write(int adress) {
-        setR(String.valueOf(adress+Integer.parseInt(getCS())));
-        setIR(3);
+        if(checkAdress(adress)==1) {
+            setR(String.valueOf(adress));
+            setIR(3);
+        }else{
+            setERR("3");
+        }
         INC("IP");
         timer();
     }

@@ -8,17 +8,25 @@ public class RmCommands extends VmCommands{
 
     //Virtualios mašinos klaidų kodai
     private String[] errorsVM = {
-           "OK",
-           "eroras1",
-           "eroras2",
-            "Neteisingas adresas"
+            "Neatpažinta komanda",
+            "Netelpa duomenys į registro rėžius",
+            "Dalyba iš nulio",
+            "Neteisingas adresas",
+            "Vykdyta POP komanda, tačiau stekas tuščias",
+            "Programos pradžioje nėra $START",
+            "Programos pabaigoje nėra $END"
     };
     //Realios mašinos klaidų kodai
     private String[] errorsRM = {
-            "OK",
-            "eroras1",
-            "eroras2",
-            "Neteisingas adresas"
+            "Nėra IRET funkcijos grįžti iš pertraukimo",
+            "Nėra laisvos atminties",
+            "Komandos INC arba DEC registrai nėra nei TI, nei SP ar IP",
+            "Neteisingas adresas",
+            "Netelpa duomenys į registro rėžius",
+            "Registras neegzistuoja INC arba DEC komandai",
+            "Kanalas neegzistuoja",
+            "Neteisinga registro reikšmė",
+            "Nepavyko atstatyti VM būsenos po komandos IRET"
     };
     //(nuo 0000 iki 0039 - pertraukimų vektorių lentelė)CS = 0040 SS = 0700 - nekeičiamas.
     //vektorių lentelei pasiekti ir rašyti - atskiros komandos
@@ -244,6 +252,7 @@ public class RmCommands extends VmCommands{
     public void writePTR(int adress){
         if(checkAdress(adress)==1) {
             m.setArrayWord(getPTR(), adress);
+            INC("IP");
         }else{
             setERR("3");
         }

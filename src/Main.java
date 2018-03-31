@@ -13,12 +13,16 @@ public class Main {
 
         //IP=1
         v.storeString(m, m.realWordAdress(m.getArray(),Integer.parseInt(v.getPTR()),Integer.parseInt(v.getIP())));
+        v.writePTR(101);
+        v.setR("500");
+        v.store(99);
+        v.setR("500");
+        v.cpr(99);
         for(int i = 0;i<800;i++){
             System.out.println(i+m.getArray()[i]);
         }
 
         //is vm-rm adreso kontevrtavimas!!!
-        v.setERR("01");
         v.printERR();
         System.out.println(v.String());
 
