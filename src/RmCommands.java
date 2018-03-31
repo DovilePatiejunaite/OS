@@ -12,9 +12,15 @@ public class RmCommands extends VmCommands{
             "Netelpa duomenys į registro rėžius",
             "Dalyba iš nulio",
             "Neteisingas adresas",
+            "Kanalas neegzistuoja",
             "Vykdyta POP komanda, tačiau stekas tuščias",
-            "Programos pradžioje nėra $START",
-            "Programos pabaigoje nėra $END"
+            "Programos pradžioje nėra $STR",
+            "Neteisinga registro reikšmė",
+            "Programos pabaigoje nėra $END",
+            "Registre yra ne skaitinė reikšmė",
+            "Neteisinga įvestis iš klavietūros",
+            "$STR panaudotas daugiau nei 1 kartą",
+            "Neteisingi funkcijos parametrai"
     };
     //Realios mašinos klaidų kodai
     private String[] errorsRM = {
@@ -26,7 +32,12 @@ public class RmCommands extends VmCommands{
             "Registras neegzistuoja INC arba DEC komandai",
             "Kanalas neegzistuoja",
             "Neteisinga registro reikšmė",
-            "Nepavyko atstatyti VM būsenos po komandos IRET"
+            "Nepavyko atstatyti VM būsenos po komandos IRET",
+            "Registre yra ne skaitinė reikšmė",
+            "Neteisinga įvestis iš klavietūros",
+            "Dalyba iš nulio",
+            "Neteisingi funkcijos parametrai",
+            "Vykdyta POP komanda, tačiau stekas tuščias"
     };
     //(nuo 0000 iki 0039 - pertraukimų vektorių lentelė)CS = 0060 SS = 0700 - nekeičiamas.
     //vektorių lentelei pasiekti ir rašyti - atskiros komandos
@@ -46,7 +57,11 @@ public class RmCommands extends VmCommands{
             if(input.length()<9){
                 break;
             } else {
-                System.out.println("Neteisinga įvestis!");
+                if(getMODE()==1) {
+                    setRE("10");
+                }else{
+                    setERR("10");
+                }
             }
         }
         m.setArrayWord(input, adress);
@@ -238,7 +253,11 @@ public class RmCommands extends VmCommands{
         if(checkAdress(adress)==1) {
             m.setArrayWord(getTI(), adress);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
     }
@@ -248,7 +267,11 @@ public class RmCommands extends VmCommands{
             m.setArrayWord(getPTR(), adress);
             INC("IP");
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
     }
@@ -260,7 +283,7 @@ public class RmCommands extends VmCommands{
     }
     //PRRE
     public void printRE(){
-        System.out.println(getRE()+" "+errorsVM[Integer.parseInt(getRE())]);
+        System.out.println(getRE()+" "+errorsRM[Integer.parseInt(getRE())]);
         INC("IP");
     }
 

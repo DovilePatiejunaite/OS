@@ -1,3 +1,4 @@
+import java.util.*;
 public class Registers {
     //Registrai inicializuojami rm pradiniais registrais.
     private int  IR = 0, CHST1 = 0, CHST2 = 0, CHST3 = 0, MODE = 1, CF = 0, ZF = 0,SF = 0;
@@ -23,11 +24,21 @@ public class Registers {
         this.m = m;
     }
     //idet patikrinima
-    //registrai kurie string pavidalo laiko vien integerius, kaip patikrinti, kad neatsirastu raides? - idet error
+    //registrai kurie string pavidalo laiko vien integerius, kaip patikrinti, kad neatsirastu raides? - idet error - DONE
     public void setRMB(String RMB) {
-        if(RMB.length()>8){
-            setERR("7");
-        } else {
+        if(RMB.length()>8 && isNumeric(RMB)!=false){
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
+        }else if(isNumeric(RMB)==false){
+            if(getMODE()==1) {
+                setRE("9");
+            }else{
+                setERR("9");
+            }
+        }else {
             this.RMB = String.format("%04d",Integer.parseInt(RMB));
         }
     }
@@ -38,7 +49,11 @@ public class Registers {
 
     public void setRS(String RS) {
         if(RS.length()>8){
-            setERR("7");
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
         } else {
             this.RS = String.format("%4s",RS);
         }
@@ -46,7 +61,11 @@ public class Registers {
 
     public void setP(String P) {
         if(P.length()>8){
-            setERR("7");;
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
         } else {
             this.P = String.format("%08d",Integer.parseInt(P));
         }
@@ -54,7 +73,11 @@ public class Registers {
 
     public void setCF(int CF) {
         if(CF>9||(CF!=0&&CF!=1)){
-            setERR("7");
+            if(getMODE()==1){
+                setRE("7");
+            }else{
+                setERR("7");
+            }
         } else {
             this.CF = CF;
         }
@@ -62,7 +85,11 @@ public class Registers {
 
     public void setZF(int ZF) {
         if(ZF>9||(ZF!=0&&ZF!=1)){
-            setERR("7");
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
         } else {
             this.ZF = ZF;
         }
@@ -77,45 +104,105 @@ public class Registers {
     }
 
     public void setCS(String CS) {
-        if(CS.length()>4){
-            setERR("7");
-        } else {
+        if(CS.length()>4 && isNumeric(CS)!=false){
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
+        }else if(isNumeric(CS)==false){
+            if(getMODE()==1) {
+                setRE("9");
+            }else{
+                setERR("9");
+            }
+        }else {
             this.CS = String.format("%04d",Integer.parseInt(CS));
         }
     }
     public void setIP(String IP) {
-        if(IP.length()>4){
-            setERR("7");
-        } else {
+        if(IP.length()>4 && isNumeric(IP)!=false){
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
+        }else if(isNumeric(IP)==false){
+            if(getMODE()==1) {
+                setRE("9");
+            }else{
+                setERR("9");
+            }
+        }else {
             this.IP = String.format("%04d",Integer.parseInt(IP));
         }
     }
     public void setPTR(String PTR) {
-        if(PTR.length()>4){
-            setERR("7");
-        } else {
+        if(PTR.length()>4 && isNumeric(PTR)!=false){
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
+        }else if(isNumeric(PTR)==false){
+            if(getMODE()==1) {
+                setRE("9");
+            }else{
+                setERR("9");
+            }
+        }else {
             this.PTR = String.format("%04d",Integer.parseInt(PTR));
         }
     }
     public void setR(String R) {
-        if(R.length()>8){
-            setERR("7");
-        } else {
+        if(R.length()>8 && isNumeric(R)!=false){
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
+        }else if(isNumeric(R)==false){
+            if(getMODE()==1) {
+                setRE("9");
+            }else{
+                setERR("9");
+            }
+        }else {
             this.R = String.format("%08d",Integer.parseInt(R));
         }
     }
 
     public void setSS(String SS) {
-        if(SS.length()>4){
-            setERR("7");
-        } else {
+        if(SS.length()>4 && isNumeric(SS)!=false){
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
+        }else if(isNumeric(SS)==false){
+            if(getMODE()==1) {
+                setRE("9");
+            }else{
+                setERR("9");
+            }
+        }else {
             this.SS = String.format("%04d",Integer.parseInt(SS));
         }
     }
     public void setSP(String SP) {
-        if(SP.length()>4){
-            setERR("7");
-        } else {
+        if(SP.length()>4 && isNumeric(SP)!=false){
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
+        }else if(isNumeric(SP)==false){
+            if(getMODE()==1) {
+                setRE("9");
+            }else{
+                setERR("9");
+            }
+        }else {
             this.SP = String.format("%04d",Integer.parseInt(SP));
         }
     }
@@ -125,7 +212,11 @@ public class Registers {
     //
     public void setIR(int IR) {
         if(IR>99){
-            setERR("7");
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
         } else {
             this.IR = IR;
         }
@@ -133,24 +224,54 @@ public class Registers {
         Interrupt();
     }
     public void setTI(String TI) {
-        if(TI.length()>2){
-            setERR("7");
-        } else {
+        if(TI.length()>2 && isNumeric(TI)!=false){
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
+        }else if(isNumeric(TI)==false){
+            if(getMODE()==1) {
+                setRE("9");
+            }else{
+                setERR("9");
+            }
+        }else {
             this.TI = String.format("%02d",Integer.parseInt(TI));
         }
         //pertraukimas jei TI ==0??
     }
     public void setRE(String RE) {
-        if(RE.length()>2){
-            setERR("7");
-        } else {
+        if(RE.length()>2 && isNumeric(RE)!=false){
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
+        }else if(isNumeric(RE)==false){
+            if(getMODE()==1) {
+                setRE("9");
+            }else{
+                setERR("9");
+            }
+        }else {
             this.RE = String.format("%02d",Integer.parseInt(RE));
         }
     }
     public void setERR(String ERR) {
-        if(ERR.length()>2){
-            setERR("7");
-        } else {
+        if(ERR.length()>2 && isNumeric(ERR)!=false){
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
+        }else if(isNumeric(ERR)==false){
+            if(getMODE()==1) {
+                setRE("9");
+            }else{
+                setERR("9");
+            }
+        }else {
             this.ERR = String.format("%02d",Integer.parseInt(ERR));
             if(!this.ERR.equals("00")) {
                 setIR(1); // PIRMAS interruptas?
@@ -159,35 +280,55 @@ public class Registers {
     }
     public void setSF(int SF) {
         if(SF>9||(SF!=0&&SF!=1)){
-            setERR("7");
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
         } else {
             this.SF = SF;
         }
     }
     public void setCHST1(int CHST1) {
         if(CHST1>9||(CHST1!=0&&CHST1!=1)){
-            setERR("7");
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
         } else {
             this.CHST1 = CHST1;
         }
     }
     public void setCHST2(int CHST2) {
         if(CHST2>9||(CHST2!=0&&CHST2!=1)){
-            setERR("7");
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
         } else {
             this.CHST2 = CHST2;
         }
     }
     public void setCHST3(int CHST3) {
         if(CHST3>9||(CHST3!=0&&CHST3!=1)){
-            setERR("7");
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
         } else {
             this.CHST3 = CHST3;
         }
     }
     public void setMODE(int MODE) {
         if(MODE>9||(MODE!=0&&MODE!=1)){
-            setERR("7");
+            if(getMODE()==1) {
+                setRE("7");
+            }else{
+                setERR("7");
+            }
         } else {
             this.MODE = MODE;
         }
@@ -309,7 +450,18 @@ public class Registers {
             setERR("5");
         }
     }
-
+    public static boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
     public String String() {
        return  "MODE: "+MODE
                +"\nPTR: "+PTR+" CS: "+CS+" IP: "+IP+"\nR: "+R+" P: "+P+" RS: "+ RS + " SS: "+ SS+" SP:"+SP
