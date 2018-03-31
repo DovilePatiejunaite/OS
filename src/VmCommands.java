@@ -41,7 +41,11 @@ public class VmCommands extends Registers{
             //if(Integer.toBinaryString(last).substring(0,1).equals("1")){
             setSF(0);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -62,7 +66,11 @@ public class VmCommands extends Registers{
                 setSF(1);
             } else setSF(0);;
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -80,7 +88,11 @@ public class VmCommands extends Registers{
                 setZF(1);
             } else setZF(0);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -92,13 +104,25 @@ public class VmCommands extends Registers{
         if(checkAdress(adress)==1) {
             String i = m.getFromArray(adress);
             int value = Integer.parseInt(i.trim());
-            int last = Integer.parseInt(getR())/value;
-            setR(String.valueOf(last));
-            if(Integer.parseInt(getR()) == 0){
-                setZF(1);
-            } else setZF(0);
+            if (value == 0) {
+                if(getMODE()==1) {
+                    setRE("11");
+                }else{
+                    setERR("2");
+                }
+            }else{
+                int last = Integer.parseInt(getR())/value;
+                setR(String.valueOf(last));
+                if(Integer.parseInt(getR()) == 0){
+                    setZF(1);
+                } else setZF(0);
+            }
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -117,7 +141,11 @@ public class VmCommands extends Registers{
             } else setZF(0);
             //set carry flag
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -136,7 +164,11 @@ public class VmCommands extends Registers{
                 setZF(1);
             } else setZF(0);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -155,7 +187,11 @@ public class VmCommands extends Registers{
                 setZF(1);
             } else setZF(0);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -173,7 +209,11 @@ public class VmCommands extends Registers{
                 setZF(1);
             } else setZF(0);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -197,7 +237,11 @@ public class VmCommands extends Registers{
             String i = m.getFromArray(adress);
             setR(i.trim());
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -209,7 +253,11 @@ public class VmCommands extends Registers{
         if(checkAdress(adress)==1) {
             m.setArrayWord(getR(),adress);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -221,7 +269,11 @@ public class VmCommands extends Registers{
         if(checkAdress(adress)==1) {
             m.setArrayWord(getRS(), adress);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -234,7 +286,11 @@ public class VmCommands extends Registers{
             String i = m.getFromArray(adress);
             setRS(i);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -285,7 +341,11 @@ public class VmCommands extends Registers{
         if(checkAdress(adress)==1) {
             m.setArrayWord(getP(), adress);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -297,7 +357,11 @@ public class VmCommands extends Registers{
         if(checkAdress(adress)==1) {
             m.setArrayWord(getIP(), adress);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -309,7 +373,11 @@ public class VmCommands extends Registers{
         if(checkAdress(adress)==1) {
             m.setArrayWord(getSP(), adress);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -321,7 +389,11 @@ public class VmCommands extends Registers{
         if(checkAdress(adress)==1) {
             m.setArrayWord(getSS(), adress);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -344,7 +416,11 @@ public class VmCommands extends Registers{
             } else setSF(0);
             //jei ZF = 1, tai reikšmės lygios. Jei SF = 1, tai didesnis adresas, jei SF = 0, didesnis registras.
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -361,7 +437,11 @@ public class VmCommands extends Registers{
             } else setZF(0);
             //Palygina dvi eilutes, jei lygios ZF=1.
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -375,7 +455,11 @@ public class VmCommands extends Registers{
             setR(String.valueOf(adress));
             setIR(4);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -388,7 +472,11 @@ public class VmCommands extends Registers{
             setR(String.valueOf(adress));
             setIR(3);
         }else{
-            setERR("3");
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         INC("IP");
         timer();
@@ -472,26 +560,37 @@ public class VmCommands extends Registers{
     }
     //POP
     public void pop(){
-        int adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        String i = m.getFromArray(adress);
-        setR(i.trim());
-        String word="-";
-        if(getMODE()==1){
-            word="";
+        if(Integer.parseInt(getSP()) == 0){
+            if(getMODE()==1) {
+                setRE("13");
+            }else{
+                setERR("5");
+            }
+        }else {
+            String i = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            setR(i.trim());
+            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            DEC("SP");
+            INC("IP");
+            timer();
         }
-        m.setArrayWord(word,Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        DEC("SP");
-        INC("IP");
-        timer();
     }
     //POPS
     public void pops(){
-        String s = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        setRS(s);
-        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        DEC("SP");
-        INC("IP");
-        timer();
+        if(Integer.parseInt(getSP()) == 0){
+            if(getMODE()==1) {
+                setRE("13");
+            }else{
+                setERR("5");
+            }
+        }else {
+            String s = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            setRS(s);
+            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            DEC("SP");
+            INC("IP");
+            timer();
+        }
     }
     //CLR
     //PAKEISI KAIP REIKIA VM KAD VEIKTU IR REALIAI!!
@@ -513,12 +612,20 @@ public class VmCommands extends Registers{
     }
     //POPM1234
     public void popm(int adress){
-        String s = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        m.setArrayWord(s,adress);
-        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        DEC("SP");
-        INC("IP");
-        timer();
+        if(Integer.parseInt(getSP()) == 0){
+            if(getMODE()==1) {
+                setRE("13");
+            }else{
+                setERR("5");
+            }
+        }else {
+            String s = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            m.setArrayWord(s, adress);
+            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            DEC("SP");
+            INC("IP");
+            timer();
+        }
     }
     //PUSF
     //supushina flagu registrus i eilę.
@@ -532,14 +639,22 @@ public class VmCommands extends Registers{
     }
     //POPF
     public void popf(){
-        String whole = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        int cf = Integer.parseInt(whole.substring(5,6));
-        int sf = Integer.parseInt(whole.substring(6,7));
-        int zf = Integer.parseInt(whole.substring(7,8));
-        m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        setCF(cf);
-        setSF(sf);
-        setZF(zf);
+        if(Integer.parseInt(getSP()) == 0){
+            if(getMODE()==1) {
+                setRE("13");
+            }else{
+                setERR("5");
+            }
+        }else {
+            String whole = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            int cf = Integer.parseInt(whole.substring(5, 6));
+            int sf = Integer.parseInt(whole.substring(6, 7));
+            int zf = Integer.parseInt(whole.substring(7, 8));
+            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            setCF(cf);
+            setSF(sf);
+            setZF(zf);
+        }
         DEC("SP");
         INC("IP");
         timer();
@@ -555,6 +670,18 @@ public class VmCommands extends Registers{
     //WRHA1234
     public void writehard(){
         setIR(5);
+        INC("IP");
+        timer();
+    }
+
+    private void setmSS(String adress){
+        setSS(adress);
+        INC("IP");
+        timer();
+    }
+
+    private void setmSP(String adress){
+        setSP(adress);
         INC("IP");
         timer();
     }
