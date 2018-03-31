@@ -127,7 +127,7 @@ public class VmCommands extends Registers{
         INC("IP");
         timer();
     }
-    //MOD 1234
+    //MOD 1234+
     public void mod(int adress){
         needMemory(adress);
         adress = checkMode(adress);
@@ -263,7 +263,7 @@ public class VmCommands extends Registers{
         timer();
     }
     //STOS1234
-    public void storeString(Memory m, int adress){
+    public void storeString( int adress){
         needMemory(adress);
         adress = checkMode(adress);
         if(checkAdress(adress)==1) {
@@ -279,7 +279,7 @@ public class VmCommands extends Registers{
         timer();
     }
     //LODS1234
-    public void loadString( int adress){
+    public void loadString(int adress){
         needMemory(adress);
         adress = checkMode(adress);
         if(checkAdress(adress)==1) {
@@ -567,9 +567,10 @@ public class VmCommands extends Registers{
                 setERR("5");
             }
         }else {
-            String i = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            String i = m.getFromArray(checkMode(Integer.parseInt(getSS()) + Integer.parseInt(getSP())));
             setR(i.trim());
-            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            String word = "";
+            m.setArrayWord(word, Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
             DEC("SP");
             INC("IP");
             timer();
@@ -661,8 +662,10 @@ public class VmCommands extends Registers{
     }
     //HDD
     //REHA1234
-    public void readhard(String adress){
-        setR(adress);
+    public void readhard(int adress){
+        needMemory(adress);
+        adress = checkMode(adress);
+        setR(String.valueOf(adress));
         setIR(6);
         INC("IP");
         timer();
@@ -670,18 +673,6 @@ public class VmCommands extends Registers{
     //WRHA1234
     public void writehard(){
         setIR(5);
-        INC("IP");
-        timer();
-    }
-
-    private void setmSS(String adress){
-        setSS(adress);
-        INC("IP");
-        timer();
-    }
-
-    private void setmSP(String adress){
-        setSP(adress);
         INC("IP");
         timer();
     }
@@ -736,8 +727,9 @@ public class VmCommands extends Registers{
     public void needMemory(int adress){
         if(getMODE()==0){
             int ad = Integer.parseInt(getPTR())%100;
-            if(m.getFromArray(ad*10+Integer.parseInt(getIP())/10).trim().equals("-"));
-            {
+            int adres = ad*10+adress/10;
+            String value = m.getFromArray(adres);
+            if(value.equals("       -")){
                 moreMemoryForVM(adress);
             }
         }

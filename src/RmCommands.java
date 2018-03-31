@@ -41,7 +41,7 @@ public class RmCommands extends VmCommands{
     };
     //(nuo 0000 iki 0039 - pertraukimų vektorių lentelė)CS = 0060 SS = 0700 - nekeičiamas.
     //vektorių lentelei pasiekti ir rašyti - atskiros komandos
-    //PRIN1234
+    //PR  1234
     public void prt(int adress) {
         String i = m.getFromArray(adress);
         System.out.println(i);
@@ -237,7 +237,7 @@ public class RmCommands extends VmCommands{
         m.setArrayWord(getRMB(), adress);
         INC("IP");
     }
-    //MIV|1|1234
+    //MIV|1|234
     public void makeIntreruptVector(int adress, int interrupt){
         m.setArrayWord("0060"+String.format("%04d",adress), interrupt);
         INC("IP");
@@ -248,7 +248,7 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
     //
-    //PTI 1234
+    //WTI 1234
     public void writeTI(int adress){
         if(checkAdress(adress)==1) {
             m.setArrayWord(getTI(), adress);
@@ -261,7 +261,7 @@ public class RmCommands extends VmCommands{
         }
         INC("IP");
     }
-    //PPTR1234
+    //WPTR1234
     public void writePTR(int adress){
         if(checkAdress(adress)==1) {
             m.setArrayWord(getPTR(), adress);
