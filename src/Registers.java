@@ -1,12 +1,12 @@
 public class Registers {
     //Registrai inicializuojami rm pradiniais registrais.
-    private int  IR, CHST1, CHST2, CHST3, MODE, CF, ZF,SF;
+    private int  IR = 0, CHST1 = 0, CHST2 = 0, CHST3 = 0, MODE = 1, CF = 0, ZF = 0,SF = 0;
     private String RS = "        ";
     private String PTR = "0000";
     private String R = "00000000";
     private String P = "00000000";
     private String IP = "0000";
-    private String CS = "0040";
+    private String CS = "0060";
     private String SS = "0700";
     private String SP = "0000";
     private String TI = "00";
@@ -130,7 +130,7 @@ public class Registers {
             this.IR = IR;
         }
         setMODE(1);
-        Interrupts interrupt = new Interrupts(m,IR);
+        Interrupt();
     }
     public void setTI(String TI) {
         if(TI.length()>2){
@@ -152,6 +152,9 @@ public class Registers {
             setERR("7");
         } else {
             this.ERR = String.format("%02d",Integer.parseInt(ERR));
+            if(!this.ERR.equals("00")) {
+                setIR(1); // PIRMAS interruptas?
+            }
         }
     }
     public void setSF(int SF) {
@@ -314,4 +317,40 @@ public class Registers {
                +"\nCHST1: "+ CHST1+" CHST2: "+ CHST2+" CHST13 "+ CHST3
                +"\nCF: "+CF+" SF: "+SF+" ZF: "+ZF+"\n";
     }
+
+    private void Interrupt(){
+        String last_sp = getSP();
+        setSP(getRMB());
+        String last_ss = getSS();
+        //VIENAI VIRTUALIAI MASINAI, steko struktūroje(ji prasideda nuo 0700 ir iki 0799)
+        //PTR,IP, R, P, RS, SS, SP, ERR, (CF, SF, ZF);
+        m.setArrayWord(getPTR(),700+Integer.parseInt(getSP()));
+        INC("SP");
+        m.setArrayWord(getIP(),700+Integer.parseInt(getSP()));
+        INC("SP");
+        m.setArrayWord(getR(),700+Integer.parseInt(getSP()));
+        INC("SP");
+        m.setArrayWord(getP(),700+Integer.parseInt(getSP()));
+        INC("SP");
+        m.setArrayWord(getRS(),700+Integer.parseInt(getSP()));
+        INC("SP");
+        m.setArrayWord(last_ss,700+Integer.parseInt(getSP()));
+        INC("SP");
+        m.setArrayWord(last_sp,700+Integer.parseInt(getSP()));
+        INC("SP");
+        m.setArrayWord(getERR(),700+Integer.parseInt(getSP()));
+        INC("SP");
+        String flags = String.valueOf(getCF())+getSF()+getZF();
+        m.setArrayWord(flags,700+Integer.parseInt(getSP()));
+        INC("SP");
+        String intadress = m.getFromArray(getIR());
+        String ip = intadress.substring(4,8);
+        if(ip.trim().equals("")){
+            ip = "0000";
+        }
+        setCS("0060");
+        setIP(ip);
+        setSS("0700");
+    }
+
 }

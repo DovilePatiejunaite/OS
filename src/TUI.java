@@ -9,6 +9,7 @@ public class TUI {
         showMenu();
         System.out.print("\nĮveskite meniu pasirinkimą: ");
         int choice = input.nextInt();
+        input.nextLine();
 
         while(true){
             switch(choice){
@@ -28,7 +29,11 @@ public class TUI {
                 case 4:
                     System.out.println("VM kodas:");
                     m.printVM(Integer.parseInt(r.getPTR()), Integer.parseInt(r.getIP()));
+                    break;
                 case 5: System.out.println(r.String());
+                        break;
+                case 6: commands();
+                    break;
                 case 9: showMenu();
                     break;
                 default: System.out.println("Tokio pasirinkimo nėra!");
@@ -57,10 +62,58 @@ public class TUI {
     //skaityti ir kompiliuoti komandas
 
     public void commands(){
-        String line = input.nextLine();
-        String command = line.substring(0,4);
-        String parameters = line.substring(4,8);
+       // r.setMODE(0);
+        int is_str = 0;
+        Boolean is_end = false;
+        r.createVirtualMachine();
+        r.setM();
+        while(true) {
+            System.out.print(r.getCS() + ":" + r.getIP() + " ");
+            String line = input.nextLine();
+            String padded = line + ("        ".substring(line.length()));
+            String command = padded.substring(0, 4);
+            String parameters = padded.substring(4, 8);
+            //NėrA $STR VM programos pradzioj
+            if(r.getIP().equals("0000")&&r.getMODE()==0){
+                if(!command.equals("$STR")){
+                    r.setERR("6");
+                }
+            }
+            //Nėra $END
+            if(r.getIP().equals("0099")&&r.getMODE()==0&&!is_end){
+                if(!command.equals("$END")) {
+                    r.setERR("8");
+                }
+            }
+            if(is_str>1&&r.getMODE()==0){
+                //kuris err kai antras $str ivestas
+                r.setERR("11");
+            }
+            r.needMemory(Integer.parseInt(r.getIP()));
+            switch (command){
+                case "$STR":
+                    r.commandToM(line);
+                    r.INC("IP");
+                    is_str++;
+                    break;
+                case "$END":
+                    r.commandToM(line);
+                    is_end=true;
+                    r.halt();
+                    break;
+                    ///
+                case "ADD ":
+                    r.commandToM(line);
+                    r.add(Integer.parseInt(parameters));
+                    break;
+                case "exit":
+                    start();
+                    break;
+            }
+        }
     }
+
+
     public void exit(){
         System.exit(1);
     }

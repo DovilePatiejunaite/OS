@@ -2,7 +2,7 @@ public class Memory extends AdrMechanism{
     private String[] array = new String[800];
     //Konstruktorius
     //interuptai nuo 0-39
-    //duomnys - vm 40-699
+    //duomnys - vm 60-699
     //stekas nuo 700-799
     public Memory(){
         System.out.println("M KONSTR");
@@ -25,13 +25,13 @@ public class Memory extends AdrMechanism{
     }
 
     public void printInterruptTable(){
-        for(int i=0;i<40;i++){
+        for(int i=0;i<60;i++){
             System.out.println(i+"-"+array[i]);
         }
     }
 
     public void printCS(){
-        for(int i=40;i<700;i++){
+        for(int i=60;i<700;i++){
             System.out.println(i+"-"+array[i]);
         }
     }

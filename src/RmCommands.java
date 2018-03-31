@@ -28,14 +28,15 @@ public class RmCommands extends VmCommands{
             "Neteisinga registro reikšmė",
             "Nepavyko atstatyti VM būsenos po komandos IRET"
     };
-    //(nuo 0000 iki 0039 - pertraukimų vektorių lentelė)CS = 0040 SS = 0700 - nekeičiamas.
+    //(nuo 0000 iki 0039 - pertraukimų vektorių lentelė)CS = 0060 SS = 0700 - nekeičiamas.
     //vektorių lentelei pasiekti ir rašyti - atskiros komandos
+    //PRIN1234
     public void prt(int adress) {
         String i = m.getFromArray(adress);
         System.out.println(i);
         INC("IP");
     }
-
+    //WRT 1234
     public void wrt(int adress) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Įveskite iki 8 simbolių, įvedimui į atmintį:");
@@ -57,13 +58,14 @@ public class RmCommands extends VmCommands{
     //jei norima grizti po pertraukimo i tam tikra realia masina visu pirma su komanda IRET yra susigrazinami reikalingi
     //registrai ir tada nustomas setM();
     //cs - nesikeičia visais atvejais
+    //SETM
     public void setM(){
         setRMB(getCS()+getSP());
         setMODE(0);
        setCS("0000");
        //patikriname ar nauja virtuali mašina, o ne backupas iš steko - jei nepaimtas backupas - SS bus vis dar
         //0700.
-       if(!getSS().equals("0700")){
+       if(getSS().equals("0700")){
            //jei nauja mašina - visi jos registrai nustatomi pradinėmis reikšmėmis.
            setSS("0090");
            setSP("0000");
@@ -75,36 +77,32 @@ public class RmCommands extends VmCommands{
            setCF(0);
            setZF(0);
            setSF(0);
+           //Inicializuojamas stekas
+           needMemory(90);
+           for(int i=0;i<10;i++){
+               m.setArrayWord("-",m.realWordAdress(m.getArray(),Integer.parseInt(getPTR()),90)+i);
+           }
        }
-       INC("IP");
+
     }
+    //INT 1
     public void inter(int number){
         setIR(number);
         INC("IP");
     }
 
-    public void setCH1(int number){
-        setCHST1(number);
-        INC("IP");
-    }
-    public void setCH2(int number){
-        setCHST2(number);
-        INC("IP");
-    }
-    public void setCH3(int number){
-        setCHST3(number);
-        INC("IP");
-    }
-
+    //INC 12
     public void increg(String register){
         INC(register);
         INC("IP");
     }
+    //DEC 12
     public void decreg(String register){
         DEC(register);
         INC("IP");
     }
     //1 bloko skaitymas iš disko. 10 žodžių
+    //REDH1234
     public void readh(ExternalMemory em, int adress){
         int last = em.getLast_read();
         for (int i = last; i<last+10; i++){
@@ -116,6 +114,7 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
     //1 bloko rašymas į diską.
+    //WRTH1234
     public void writeh(ExternalMemory em, int adress){
         for (int i = 0; i<10; i++){
             em.setArrayWord(m.getFromArray(i),adress);
@@ -127,6 +126,7 @@ public class RmCommands extends VmCommands{
     }
     //IRET - grįžimo į VM funkcija.
     //Prieš pertraukimo apdorojimą viskas sudėta buvo tokia tvarka PTR,IP, R, P, RS, SS, SP, ERR-negrazinamas, (CF, SF, ZF);
+    //IRET
     public void iret(){
         //FLAGAI
         String whole = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
@@ -180,32 +180,35 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
     //Timeris
+    //SETT 12
     public void setTimer(String ti){
         setTI(ti);
         INC("IP");
     }
-
+    //SCH 1
     public void setChnannel(int r){
         SETCH(r);
         INC("IP");
     }
+    //CLCH 1
     public void clearChnannel(int r){
         CLRCH(r);
         INC("IP");
     }
-
+    //CHCh 1
     public void checkChnannel(int r){
         setCF(getCHST1());
         INC("IP");
     }
-
+    //SPTR1234
     public void ptr(String value){
         setPTR(value);
         INC("IP");
     }
 
+    //VMCR
     public void createVirtualMachine(){
-        int table_block = m.findFreeSpace(m.getArray());
+        int table_block = m.findFreeSpace(m.getArray(),10,60);
         setPTR("10"+String.format("%02d",table_block));
         int block_adress = table_block*10;
         for(int i=0;i<10;i++){
@@ -214,33 +217,23 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
 
-
-//issikiriam vietos is vm->rm kur bus irasoma
-// IP yra virtualios mašinos (CS=0, adreso nekeičia)
-    //nėra komanda!! nedidina IP ir yra puslapiavimo dalis.
-    public void moreMemoryForVM(int ip){
-        int block =  m.findFreeSpace(m.getArray());
-        int which_block = ip/10;
-        System.out.println(getPTR());
-        int ptr =  Integer.parseInt(getPTR())%100;
-        int adress = ptr*10+which_block;
-        m.setArrayWord(String.valueOf(block), adress);
-    }
-
+    //PRMB1234
     public void RMBtoMemory(int adress){
         m.setArrayWord(getRMB(), adress);
         INC("IP");
     }
-
+    //MIV|1|1234
     public void makeIntreruptVector(int adress, int interrupt){
-        m.setArrayWord("0040"+String.format("%04d",adress), interrupt);
+        m.setArrayWord("0060"+String.format("%04d",adress), interrupt);
         INC("IP");
     }
-
+    //LIV 1
     public void loadInterruptVector(int interrupt){
         setR(m.getFromArray(interrupt));
         INC("IP");
     }
+    //
+    //PTI 1234
     public void writeTI(int adress){
         if(checkAdress(adress)==1) {
             m.setArrayWord(getTI(), adress);
@@ -249,6 +242,7 @@ public class RmCommands extends VmCommands{
         }
         INC("IP");
     }
+    //PPTR1234
     public void writePTR(int adress){
         if(checkAdress(adress)==1) {
             m.setArrayWord(getPTR(), adress);
@@ -259,13 +253,16 @@ public class RmCommands extends VmCommands{
         INC("IP");
     }
 
+    //PRER
     public void printERR(){
         System.out.println(getERR()+" "+errorsVM[Integer.parseInt(getERR())]);
         INC("IP");
     }
+    //PRRE
     public void printRE(){
         System.out.println(getRE()+" "+errorsVM[Integer.parseInt(getRE())]);
         INC("IP");
     }
+
     //kanalų valdymas
 }
