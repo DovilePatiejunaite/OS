@@ -127,7 +127,7 @@ public class VmCommands extends Registers{
         INC("IP");
         timer();
     }
-    //MOD 1234
+    //MOD 1234+
     public void mod(int adress){
         needMemory(adress);
         adress = checkMode(adress);
@@ -263,7 +263,7 @@ public class VmCommands extends Registers{
         timer();
     }
     //STOS1234
-    public void storeString(Memory m, int adress){
+    public void storeString( int adress){
         needMemory(adress);
         adress = checkMode(adress);
         if(checkAdress(adress)==1) {
@@ -279,7 +279,7 @@ public class VmCommands extends Registers{
         timer();
     }
     //LODS1234
-    public void loadString( int adress){
+    public void loadString(int adress){
         needMemory(adress);
         adress = checkMode(adress);
         if(checkAdress(adress)==1) {
@@ -430,7 +430,7 @@ public class VmCommands extends Registers{
         needMemory(adress);
         adress= checkMode(adress);
         if(checkAdress(adress)==1){
-            String i = m.getFromArray(adress);
+             String i = m.getFromArray(adress);
             //String i = m.getFromArray(adress);
             if(i.equals(getRS())){
                 setZF(1);
@@ -567,14 +567,10 @@ public class VmCommands extends Registers{
                 setERR("5");
             }
         }else {
-            int adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-            String i = m.getFromArray(adress);
+            String i = m.getFromArray(checkMode(Integer.parseInt(getSS()) + Integer.parseInt(getSP())));
             setR(i.trim());
-            String word = "-";
-            if(getMODE()==1){
-                word = "";
-            }
-            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            String word = "";
+            m.setArrayWord(word, Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
             DEC("SP");
             INC("IP");
             timer();
@@ -589,14 +585,9 @@ public class VmCommands extends Registers{
                 setERR("5");
             }
         }else {
-            int adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-            String i = m.getFromArray(adress);
-            setRS(i);
-            String word = "-";
-            if(getMODE()==1){
-                word = "";
-            }
-            m.setArrayWord(word, Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            String s = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            setRS(s);
+            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
             DEC("SP");
             INC("IP");
             timer();
@@ -614,9 +605,8 @@ public class VmCommands extends Registers{
     }
     //PUSM1234
     public void pushm(int adress){
-        adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        String i = m.getFromArray(adress);
-        m.setArrayWord(i,adress);
+        String s = m.getFromArray(adress);
+        m.setArrayWord(s,Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         INC("SP");
         INC("IP");
         timer();
@@ -630,14 +620,9 @@ public class VmCommands extends Registers{
                 setERR("5");
             }
         }else {
-            adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-            String i = m.getFromArray(adress);
-            m.setArrayWord(i, adress);
-            String word = "-";
-            if(getMODE()==1){
-                word = "";
-            }
-            m.setArrayWord(word, Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            String s = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            m.setArrayWord(s, adress);
+            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
             DEC("SP");
             INC("IP");
             timer();
@@ -648,8 +633,7 @@ public class VmCommands extends Registers{
     public void pushf(){
         String whole = String.valueOf(getCF()).concat(String.valueOf(getSF()));
         String last = whole.concat(String.valueOf(getZF()));
-        int adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-        m.setArrayWord(last,adress);
+        m.setArrayWord(last,Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         INC("SP");
         INC("IP");
         timer();
@@ -663,16 +647,11 @@ public class VmCommands extends Registers{
                 setERR("5");
             }
         }else {
-            int adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
-            String whole = m.getFromArray(adress);
-            String word = "-";
-            if(getMODE()==1){
-                word = "";
-            }
+            String whole = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
             int cf = Integer.parseInt(whole.substring(5, 6));
             int sf = Integer.parseInt(whole.substring(6, 7));
             int zf = Integer.parseInt(whole.substring(7, 8));
-            m.setArrayWord(word, Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
             setCF(cf);
             setSF(sf);
             setZF(zf);
@@ -683,8 +662,10 @@ public class VmCommands extends Registers{
     }
     //HDD
     //REHA1234
-    public void readhard(String adress){
-        setR(adress);
+    public void readhard(int adress){
+        needMemory(adress);
+        adress = checkMode(adress);
+        setR(String.valueOf(adress));
         setIR(6);
         INC("IP");
         timer();
@@ -746,8 +727,9 @@ public class VmCommands extends Registers{
     public void needMemory(int adress){
         if(getMODE()==0){
             int ad = Integer.parseInt(getPTR())%100;
-            if(m.getFromArray(ad*10+Integer.parseInt(getIP())/10).trim().equals("-"))
-            {
+            int adres = ad*10+adress/10;
+            String value = m.getFromArray(adres);
+            if(value.equals("       -")){
                 moreMemoryForVM(adress);
             }
         }

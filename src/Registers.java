@@ -26,7 +26,7 @@ public class Registers {
     //idet patikrinima
     //registrai kurie string pavidalo laiko vien integerius, kaip patikrinti, kad neatsirastu raides? - idet error - DONE
     public void setRMB(String RMB) {
-        if(RMB.length()>8 && isNumeric(RMB)!=false){
+        if(RMB.length()>4 && isNumeric(RMB)!=false){
             if(getMODE()==1) {
                 setRE("7");
             }else{

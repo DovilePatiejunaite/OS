@@ -44,10 +44,25 @@ public class Memory extends AdrMechanism{
 
     //paskutinis virtualios masinos ip arba vm programos dydis.
 
-    public void printVM(int PTR, int lastIP){
-        for(int i=0;i<lastIP;i++){
-            String word = getFromArray(realWordAdress(array,PTR,i));
-            System.out.println(i+"-"+word);
+    public void printVM(int PTR){
+        int k = 0;
+        for(int i=0;i<10;i++){
+            String word = "";
+            int adress = PTR%100*10+i;
+            String w = getFromArray(PTR%100*10+i);
+            if(!(w.equals("       -"))){
+                for(int j=0;j<10;j++){
+                    word = getFromArray(Integer.parseInt(w.trim())*10+j);
+                    System.out.println(k+"-"+word);
+                    k++;
+                }
+            } else {
+                for(int l=0;l<10;l++) {
+                    System.out.println(k + "-" + word);
+                    k++;
+                }
+            }
+
         }
     }
 }
