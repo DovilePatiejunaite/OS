@@ -11,8 +11,7 @@ public class Main {
         //NUO ČIA VM
         //IP=0
 
-        //IP=1
-        v.storeString(m, m.realWordAdress(m.getArray(),Integer.parseInt(v.getPTR()),Integer.parseInt(v.getIP())));
+
         v.writePTR(101);
         v.setR("0");
         v.store(99);
