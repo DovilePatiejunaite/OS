@@ -75,7 +75,7 @@ public class RmCommands extends VmCommands{
     //cs - nesikeičia visais atvejais
     //SETM
     public void setM(){
-        setRMB(getCS()+getSP());
+        setRMB(getSP());
         setMODE(0);
        setCS("0000");
        //patikriname ar nauja virtuali mašina, o ne backupas iš steko - jei nepaimtas backupas - SS bus vis dar
@@ -144,7 +144,7 @@ public class RmCommands extends VmCommands{
     //IRET
     public void iret(){
         //FLAGAI
-        String whole = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        String whole = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())-1);
         int cf = Integer.parseInt(whole.substring(5,6));
         int sf = Integer.parseInt(whole.substring(6,7));
         int zf = Integer.parseInt(whole.substring(7,8));
@@ -157,35 +157,35 @@ public class RmCommands extends VmCommands{
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         DEC("SP");
         //SP
-        String last_sp = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        String last_sp = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())-1);
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         DEC("SP");
         //SS
-        String last_ss = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        String last_ss = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())-1);
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         DEC("SP");
         //RS
-        String i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())).trim();
+        String i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())-1).trim();
         setRS(i);
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         DEC("SP");
         //P
-        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())).trim();
+        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())-1).trim();
         setP(i.trim());
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         DEC("SP");
         //R
-        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())).trim();
+        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())-1).trim();
         setR(i.trim());
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         DEC("SP");
         //IP
-        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())).trim();
+        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())-1).trim();
         setIP(i.trim());
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         DEC("SP");
         //PTR
-        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())).trim();
+        i = m.getFromArray(Integer.parseInt(getSS())+Integer.parseInt(getSP())-1).trim();
         setPTR(i.trim());
         m.setArrayWord("",Integer.parseInt(getSS())+Integer.parseInt(getSP()));
         DEC("SP");

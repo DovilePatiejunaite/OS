@@ -65,8 +65,6 @@ public class TUI {
        // r.setMODE(0);
         int is_str = 0;
         Boolean is_end = false;
-        r.createVirtualMachine();
-        r.setM();
         while(true) {
             r.needMemory(Integer.parseInt(r.getIP()));
             System.out.print(r.getCS() + ":" + r.getIP() + " ");
