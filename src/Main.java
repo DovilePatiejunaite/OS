@@ -8,18 +8,6 @@ public class Main {
         System.out.println(v.getPTR());
         v.getPTR();
         v.moreMemoryForVM(Integer.parseInt(v.getIP()));
-        //NUO ČIA VM
-        //IP=0
-
-
-        v.writePTR(101);
-        v.setR("0");
-        v.store(99);
-        v.setR("500");
-        v.cpr(99);
-        v.div(99);
-        v.printERR();
-        v.setRS("        ");
         v.write(99);
         //v.pushs();
         System.out.println(v.getSP());
