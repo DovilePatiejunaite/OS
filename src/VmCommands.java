@@ -305,6 +305,7 @@ public class VmCommands extends Registers{
         INC("IP");
         timer();
     }
+    //kom
     //kairej
     //LODL1234
     public void loadS(int bytes) {
