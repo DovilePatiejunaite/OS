@@ -493,9 +493,17 @@ public class VmCommands extends Registers{
     //GO  1234
     //Valdymo perdavimo komandos
     public void go(int adress){
-        needMemory(adress);
-        adress = checkMode(adress);
-        setIP(String.valueOf(adress));
+        if(checkAdress(adress)==1) {
+            needMemory(adress);
+            adress = checkMode(adress);
+            setIP(String.valueOf(adress));
+        }else{
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
+        }
         timer();
     }
     //HALT
@@ -507,46 +515,86 @@ public class VmCommands extends Registers{
     //JE  1234
     //Sąlyginio valdymo perdavimo komandos
     public void je(int adress){
-        needMemory(adress);
-        adress = checkMode(adress);
-        if(getZF() == 1){
-            setIP(String.valueOf(adress));
+        if(checkAdress(adress)==1) {
+            needMemory(adress);
+            adress = checkMode(adress);
+            if(getZF() == 1){
+                setIP(String.valueOf(adress));
+            }
+        }else{
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         timer();
     }
     //JN  1234
     public void jn(int adress){
-        needMemory(adress);
-        adress = checkMode(adress);
-        if(getZF() == 0){
-            setIP(String.valueOf(adress));
+        if(checkAdress(adress)==1) {
+            needMemory(adress);
+            adress = checkMode(adress);
+            if(getZF() == 0){
+                setIP(String.valueOf(adress));
+            }
+        }else{
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         timer();
     }
     //JL 1234
     public void jl(int adress){
-        needMemory(adress);
-        adress = checkMode(adress);
-        if(getSF() == 1){
-            setIP(String.valueOf(adress));
+        if(checkAdress(adress)==1) {
+            needMemory(adress);
+            adress = checkMode(adress);
+            if(getSF() == 1){
+                setIP(String.valueOf(adress));
+            }
+        }else{
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         timer();
     }
     //JG  1234
     public void jg(int adress){
-        needMemory(adress);
-        adress = checkMode(adress);
-        if(getSF() == 0){
-            setIP(String.valueOf(adress));
+        if(checkAdress(adress)==1) {
+            needMemory(adress);
+            adress = checkMode(adress);
+            if(getSF() == 0){
+                setIP(String.valueOf(adress));
+            }
+        }else{
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         timer();
     }
     //JO  1234
     public void jo(int adress){
-        needMemory(adress);
-        adress = checkMode(adress);
-        if(getCF() == 1){
-            setIP(String.valueOf(adress));
+        if(checkAdress(adress)==1) {
+            needMemory(adress);
+            adress = checkMode(adress);
+            if(getCF() == 1){
+                setIP(String.valueOf(adress));
+            }
+        }else{
+            if(getMODE()==1) {
+                setRE("3");
+            }else{
+                setERR("3");
+            }
         }
         timer();
     }
