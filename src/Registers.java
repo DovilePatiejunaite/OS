@@ -220,8 +220,10 @@ public class Registers {
         } else {
             this.IR = IR;
         }
-        setMODE(1);
-        Interrupt();
+        if(IR!=0) {
+            setMODE(1);
+            Interrupt();
+        }
     }
     public void setTI(String TI) {
         if(TI.length()>2 && isNumeric(TI)!=false){
@@ -256,6 +258,9 @@ public class Registers {
             }
         }else {
             this.RE = String.format("%02d",Integer.parseInt(RE));
+            if(this.RE.equals("07")||this.RE.equals("09")){
+                DEC("IP");
+            }
         }
     }
     public void setERR(String ERR) {
@@ -273,6 +278,9 @@ public class Registers {
             }
         }else {
             this.ERR = String.format("%02d",Integer.parseInt(ERR));
+            if(this.ERR.equals("07")||this.ERR.equals("09")){
+                DEC("IP");
+            }
             if(!this.ERR.equals("00")) {
                 setIR(1); // PIRMAS interruptas?
             }
