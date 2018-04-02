@@ -2,7 +2,6 @@ import java.util.*;
 public class VmCommands extends Registers{
     VmCommands(Memory m){
         super(m);
-        System.out.println("VM KONSTR");
     }
     //VM pradiniai cs=0;ip=0,SS=90, SP=0
     //cs nekeičiamas
@@ -12,8 +11,8 @@ public class VmCommands extends Registers{
     private void overflow(int last) {
         if(last>99999999){
             String str = String.valueOf(last);
-            String first = str.substring(0,4);
-            String second = str.substring(4,str.length());
+            String first = str.substring(0,8);
+            String second = str.substring(8,str.length());
             setR(first);
             setP(second);
             setCF(1);
@@ -25,7 +24,6 @@ public class VmCommands extends Registers{
     }
 
     //aritmetinės komandos
-    //imamas dabartinis CS, nes beveik visos komandos gali būti naudojamos ir VM ir RM, kuriose CS registras skiriasi.
     //ADD 1234
     public void add(int adress){
         needMemory(adress);
@@ -493,9 +491,12 @@ public class VmCommands extends Registers{
     //GO  1234
     //Valdymo perdavimo komandos
     public void go(int adress){
-        if(checkAdress(adress)==1) {
+        int ad = adress;
+        if(getMODE()==1){
+            ad = ad+60;
+        }
+        if(checkAdress(ad)==1) {
             needMemory(adress);
-            adress = checkMode(adress);
             setIP(String.valueOf(adress));
         }else{
             if(getMODE()==1) {
@@ -515,9 +516,12 @@ public class VmCommands extends Registers{
     //JE  1234
     //Sąlyginio valdymo perdavimo komandos
     public void je(int adress){
-        if(checkAdress(adress)==1) {
+        int ad = adress;
+        if(getMODE()==1){
+            ad = ad+60;
+        }
+        if(checkAdress(ad)==1) {
             needMemory(adress);
-            adress = checkMode(adress);
             if(getZF() == 1){
                 setIP(String.valueOf(adress));
             }
@@ -532,9 +536,12 @@ public class VmCommands extends Registers{
     }
     //JN  1234
     public void jn(int adress){
-        if(checkAdress(adress)==1) {
+        int ad = adress;
+        if(getMODE()==1){
+            ad = ad+60;
+        }
+        if(checkAdress(ad)==1) {
             needMemory(adress);
-            adress = checkMode(adress);
             if(getZF() == 0){
                 setIP(String.valueOf(adress));
             }
@@ -549,9 +556,12 @@ public class VmCommands extends Registers{
     }
     //JL 1234
     public void jl(int adress){
-        if(checkAdress(adress)==1) {
+        int ad = adress;
+        if(getMODE()==1){
+            ad = ad+60;
+        }
+        if(checkAdress(ad)==1) {
             needMemory(adress);
-            adress = checkMode(adress);
             if(getSF() == 1){
                 setIP(String.valueOf(adress));
             }
@@ -566,9 +576,12 @@ public class VmCommands extends Registers{
     }
     //JG  1234
     public void jg(int adress){
-        if(checkAdress(adress)==1) {
+        int ad = adress;
+        if(getMODE()==1){
+            ad = ad+60;
+        }
+        if(checkAdress(ad)==1) {
             needMemory(adress);
-            adress = checkMode(adress);
             if(getSF() == 0){
                 setIP(String.valueOf(adress));
             }
@@ -583,9 +596,12 @@ public class VmCommands extends Registers{
     }
     //JO  1234
     public void jo(int adress){
-        if(checkAdress(adress)==1) {
+        int ad = adress;
+        if(getMODE()==1){
+            ad = ad+60;
+        }
+        if(checkAdress(ad)==1) {
             needMemory(adress);
-            adress = checkMode(adress);
             if(getCF() == 1){
                 setIP(String.valueOf(adress));
             }
@@ -758,7 +774,10 @@ public class VmCommands extends Registers{
         timer();
     }
     //WRHA1234
-    public void writehard(){
+    public void writehard(int adress){
+        needMemory(adress);
+        adress = checkMode(adress);
+        setR(String.valueOf(adress));
         setIR(5);
         INC("IP");
         timer();

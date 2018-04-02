@@ -3,8 +3,8 @@ public class Registers {
     //Registrai inicializuojami rm pradiniais registrais.
     private int  IR = 0, CHST1 = 0, CHST2 = 0, CHST3 = 0, MODE = 1, CF = 0, ZF = 0,SF = 0;
     private String RS = "        ";
-    private String PTR = "0000";
-    private String R = "00000000";
+    private String PTR = "0000";//+
+    private String R = "00000000";//+
     private String P = "00000000";
     private String IP = "0000";
     private String CS = "0060";

@@ -3,12 +3,11 @@ import java.util.Scanner;
 public class RmCommands extends VmCommands{
     RmCommands(Memory m){
         super(m);
-        System.out.println("RM KONSTR");
     }
 
     //Virtualios mašinos klaidų kodai
     private String[] errorsVM = {
-            "Neatpažinta komanda",
+            "OK",
             "Netelpa duomenys į registro rėžius",
             "Dalyba iš nulio",
             "Neteisingas adresas",
@@ -21,11 +20,12 @@ public class RmCommands extends VmCommands{
             "Neteisinga įvestis iš klavietūros",
             "$STR panaudotas daugiau nei 1 kartą",
             "Neteisingi funkcijos parametrai",
-            "Bandoma vykdyti komandą be supervizorinių teisių"
+            "Bandoma vykdyti komandą be supervizorinių teisių",
+            "Neatpažinta komanda"
     };
     //Realios mašinos klaidų kodai
     private String[] errorsRM = {
-            "Nėra IRET funkcijos grįžti iš pertraukimo",
+            "OK",
             "Nėra laisvos atminties",
             "Komandos INC arba DEC registrai nėra nei TI, nei SP ar IP",
             "Neteisingas adresas",
@@ -33,7 +33,7 @@ public class RmCommands extends VmCommands{
             "Registras neegzistuoja INC arba DEC komandai",
             "Kanalas neegzistuoja",
             "Neteisinga registro reikšmė",
-            "Nepavyko atstatyti VM būsenos po komandos IRET",
+            "",
             "Registre yra ne skaitinė reikšmė",
             "Neteisinga įvestis iš klavietūros",
             "Dalyba iš nulio",
@@ -65,8 +65,7 @@ public class RmCommands extends VmCommands{
         executable();
         if(checkChnannel(2)){
             setRE("15");
-        }
-        {
+        } else {
             setCHST2(1);
             Scanner scanner = new Scanner(System.in);
             System.out.println("Įveskite iki 8 simbolių, įvedimui į atmintį:");
@@ -268,7 +267,6 @@ public class RmCommands extends VmCommands{
         CLRCH(r);
         INC("IP");
     }
-    //CHCh 1
     public boolean checkChnannel(int r){
         int chanel = 0;
         if(r==1){
@@ -329,6 +327,7 @@ public class RmCommands extends VmCommands{
         executable();
         if(checkAdress(adress)==1) {
             m.setArrayWord(getTI(), adress);
+            INC("IP");
         }else{
             if(getMODE()==1) {
                 setRE("3");
@@ -336,7 +335,6 @@ public class RmCommands extends VmCommands{
                 setERR("3");
             }
         }
-        INC("IP");
     }
     //WPTR1234
     public void writePTR(int adress){
@@ -351,7 +349,6 @@ public class RmCommands extends VmCommands{
                 setERR("3");
             }
         }
-        INC("IP");
     }
 
     //PRER
@@ -370,7 +367,9 @@ public class RmCommands extends VmCommands{
         if(getMODE()==1){
         } else {
             setERR("14");
+            DEC("IP");
         }
+
     }
     //kanalų valdymas
 }

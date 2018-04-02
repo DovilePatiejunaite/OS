@@ -33,7 +33,7 @@ public class TUI {
                         break;
                 case 6: commands();
                     break;
-                case 9: showMenu();
+                case 7: showMenu();
                     break;
                 default: System.out.println("Tokio pasirinkimo nėra!");
                     break;
@@ -53,7 +53,7 @@ public class TUI {
         System.out.println("*[4] Išvesti VM reprezentaciją            *");
         System.out.println("*[5] Išvesti registrų reikšmes            *");
         System.out.println("*[6] Komandų interpretatorius             *");
-        System.out.println("*[9] `Pakartoti meniu pasirinkimus        *");
+        System.out.println("*[7] `Pakartoti meniu pasirinkimus        *");
         System.out.println("*[0] `Išeiti iš sistemos                  *");
         System.out.println("*******************************************\n");
     }
@@ -72,7 +72,7 @@ public class TUI {
                 if (r.getMODE() == 1) {
                     r.setRE("10");
                 } else {
-                    r.setERR("10");
+                    r.setERR("14");
                 }
             } else {
                 String padded = line + ("        ".substring(line.length()));
@@ -328,7 +328,9 @@ public class TUI {
                         break;
                     case "WRHA":
                         r.commandToM(line);
-                        r.writehard();
+                        if(r.checkParameters(parameters)) {
+                            r.writehard(Integer.parseInt(parameters));
+                        }
                         break;
                     case "REHA":
                         r.commandToM(line);
@@ -402,7 +404,7 @@ public class TUI {
                     case "CLCH":
                         r.commandToM(line);
                         if(r.checkParameters(parameters)) {
-                            r.clearChnannel(Integer.parseInt(parameters));
+                            r.clearChnannel(Integer.parseInt(parameters.trim()));
                         }
                         break;
                     case "CHCH":
@@ -470,7 +472,7 @@ public class TUI {
                         if (r.getMODE() == 1) {
                             r.setRE("10");
                         } else {
-                            r.setERR("10");
+                            r.setERR("14");
                         }
                 }
             }

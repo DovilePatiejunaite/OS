@@ -5,7 +5,6 @@ public class Memory extends AdrMechanism{
     //duomnys - vm 60-699
     //stekas nuo 700-799
     public Memory(){
-        System.out.println("M KONSTR");
         for (int i = 0; i < array.length; i++){
                 array[i]= "        ";
                 //komentaras
