@@ -54,6 +54,7 @@ public class RmCommands extends VmCommands{
         if(checkChnannel(1)){
             setRE("15");
         } else {
+            setCHST1(1);
             String i = m.getFromArray(adress);
             System.out.println(i);
             INC("IP");
@@ -66,6 +67,7 @@ public class RmCommands extends VmCommands{
             setRE("15");
         }
         {
+            setCHST2(1);
             Scanner scanner = new Scanner(System.in);
             System.out.println("Įveskite iki 8 simbolių, įvedimui į atmintį:");
             String input = "";
@@ -147,6 +149,7 @@ public class RmCommands extends VmCommands{
             setRE("15");
         } else
         {
+            setCHST3(1);
             int last = em.getLast_read();
             em.getArray();
             for (int i = last; i < last + 10; i++) {
@@ -172,7 +175,7 @@ public class RmCommands extends VmCommands{
         if(checkChnannel(3)){
             setRE("15");
         } else {
-
+            setCHST3(1);
             for (int i = 0; i < 10; i++) {
                 em.writeArrayWord(m.getFromArray(adress+i));
             }
