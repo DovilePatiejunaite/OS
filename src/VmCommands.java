@@ -577,10 +577,14 @@ public class VmCommands extends Registers{
             }
         }else {
             DEC("SP");
-            String i = m.getFromArray(checkMode(Integer.parseInt(getSS()) + Integer.parseInt(getSP())));
+            int adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+            String i = m.getFromArray(adress);
             setR(i.trim());
-            String word = "";
-            m.setArrayWord(word, Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            String word = "-";
+            if(getMODE()==1){
+                word = "";
+            }
+            m.setArrayWord(word, adress);
             INC("IP");
             timer();
         }
@@ -595,10 +599,14 @@ public class VmCommands extends Registers{
             }
         }else {
             DEC("SP");
-            String s = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
-            setRS(s);
-            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
-
+            int adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+            String i = m.getFromArray(adress);
+            setRS(i);
+            String word = "-";
+            if(getMODE()==1){
+                word = "";
+            }
+            m.setArrayWord(word,adress);
             INC("IP");
             timer();
         }
@@ -623,8 +631,9 @@ public class VmCommands extends Registers{
     }
     //PUSM1234
     public void pushm(int adress){
-        String s = m.getFromArray(adress);
-        m.setArrayWord(s,Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        String i = m.getFromArray(adress);
+        m.setArrayWord(i,adress);
         INC("SP");
         INC("IP");
         timer();
@@ -639,9 +648,14 @@ public class VmCommands extends Registers{
             }
         }else {
             DEC("SP");
-            String s = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
-            m.setArrayWord(s, adress);
-            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+            String i = m.getFromArray(adress);
+            m.setArrayWord(i, adress);
+            String word = "-";
+            if(getMODE()==1){
+                word = "";
+            }
+            m.setArrayWord(word, adress);
             INC("IP");
             timer();
         }
@@ -651,7 +665,8 @@ public class VmCommands extends Registers{
     public void pushf(){
         String whole = String.valueOf(getCF()).concat(String.valueOf(getSF()));
         String last = whole.concat(String.valueOf(getZF()));
-        m.setArrayWord(last,Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        int adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+        m.setArrayWord(last,adress);
         INC("SP");
         INC("IP");
         timer();
@@ -666,17 +681,22 @@ public class VmCommands extends Registers{
             }
         }else {
             DEC("SP");
-            String whole = m.getFromArray(Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            int adress = checkMode(Integer.parseInt(getSS())+Integer.parseInt(getSP()));
+            String whole = m.getFromArray(adress);
+            String word = "-";
+            if(getMODE()==1){
+                word = "";
+            }
             int cf = Integer.parseInt(whole.substring(5, 6));
             int sf = Integer.parseInt(whole.substring(6, 7));
             int zf = Integer.parseInt(whole.substring(7, 8));
-            m.setArrayWord("", Integer.parseInt(getSS()) + Integer.parseInt(getSP()));
+            m.setArrayWord(word, adress);
             setCF(cf);
             setSF(sf);
             setZF(zf);
+            INC("IP");
         }
 
-        INC("IP");
         timer();
     }
     //HDD
